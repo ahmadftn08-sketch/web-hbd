@@ -563,11 +563,6 @@ body.dark-mode .card-title {
     border-radius:10px;
 }
 
-.pos-toolbar{ display:flex; gap:10px; margin-bottom:15px; }
-.search-box{ position:relative; flex:1; }
-.search-box span{ position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:.9rem; pointer-events:none; }
-.search-box input{ padding-left:38px; }
-
 .form-control{
     width:100%;
     border:1.5px solid var(--border);
@@ -584,6 +579,28 @@ body.dark-mode .card-title {
 .form-control:focus{
     border-color:var(--primary);
     box-shadow:0 0 0 3px rgba(92,6,28,.08);
+}
+
+.recipe-ingredient-option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-height:46px;
+    padding:9px 11px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:var(--text);
+    font-size:.88rem;
+    font-weight:700;
+    line-height:1.35;
+    cursor:pointer;
+}
+.recipe-ingredient-option input{
+    width:20px;
+    height:20px;
+    flex:0 0 20px;
+    accent-color:var(--primary);
+    cursor:pointer;
 }
 
 
@@ -1007,6 +1024,72 @@ body.dark-mode .modal-title { color: #f472b6; }
 ::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:20px; }
 ::-webkit-scrollbar-track{ background:transparent; }
 
+/* THEME 2: OLIVE LIQUID GLASS */
+body.theme-olive{--primary:#556b2f;--primary-dark:#35451d;--primary-light:#edf2df;--gold:#c79a3b;--gold-light:#fbf5e6;--bg:#f5f3e9;--surface:rgba(255,254,250,.78);--surface-soft:rgba(242,239,224,.76);--text:#263222;--muted:#6c7564;--border:rgba(107,121,83,.2);--shadow-sm:0 4px 14px rgba(53,69,29,.07);--shadow-md:0 12px 30px rgba(53,69,29,.1);--shadow-lg:0 22px 55px rgba(39,53,26,.18);background:radial-gradient(ellipse at 8% 12%,rgba(199,154,59,.2),transparent 34%),radial-gradient(ellipse at 92% 28%,rgba(85,107,47,.2),transparent 36%),radial-gradient(ellipse at 55% 88%,rgba(169,183,118,.16),transparent 40%),var(--bg)}
+body.theme-olive::before,body.theme-olive::after{content:"";position:fixed;z-index:0;pointer-events:none;width:min(48vw,560px);height:min(48vw,560px);border-radius:50%;filter:blur(90px);opacity:.35;transform:translateZ(0)}
+body.theme-olive::before{top:10vh;left:-16vw;background:radial-gradient(circle,rgba(194,161,83,.48),rgba(194,161,83,0) 68%)}
+body.theme-olive::after{right:-16vw;top:36vh;background:radial-gradient(circle,rgba(95,125,61,.48),rgba(95,125,61,0) 68%)}
+body.theme-olive main{position:relative;z-index:1}
+body.theme-olive.dark-mode{--primary:#9ab56a;--primary-dark:#536a34;--primary-light:rgba(106,132,66,.2);--gold:#e1bd68;--bg:#172018;--surface:rgba(37,51,39,.82);--surface-soft:rgba(47,64,49,.8);--text:#f0f2e8;--muted:#b0bba9;--border:rgba(207,220,194,.14);background:radial-gradient(ellipse at 8% 12%,rgba(191,156,79,.16),transparent 34%),radial-gradient(ellipse at 92% 28%,rgba(112,148,72,.2),transparent 36%),radial-gradient(ellipse at 55% 88%,rgba(61,95,62,.18),transparent 40%),var(--bg)}
+body.theme-olive.dark-mode::before{background:radial-gradient(circle,rgba(188,148,65,.38),rgba(188,148,65,0) 68%)}
+body.theme-olive.dark-mode::after{background:radial-gradient(circle,rgba(102,145,75,.42),rgba(102,145,75,0) 68%)}
+body.theme-olive .topbar{background:linear-gradient(135deg,rgba(85,107,47,.92),rgba(53,69,29,.94));box-shadow:0 10px 32px rgba(53,69,29,.2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+body.theme-olive .card,body.theme-olive .menu-card,body.theme-olive .stat-card,body.theme-olive .cart-item,body.theme-olive .modal{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-md);backdrop-filter:blur(16px) saturate(135%);-webkit-backdrop-filter:blur(16px) saturate(135%)}
+body.theme-olive .menu-card:hover{border-color:rgba(85,107,47,.48)}
+body.theme-olive .bottom-nav{background:rgba(255,254,250,.72);border-color:rgba(255,255,255,.78);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
+body.theme-olive.dark-mode .bottom-nav{background:rgba(37,51,39,.78);border-color:var(--border)}
+body.theme-olive .nav-btn.active{color:var(--primary);background:rgba(85,107,47,.12)}
+body.theme-olive.dark-mode .nav-btn.active{color:#c5d99b;background:rgba(106,132,66,.2)}
+body.theme-olive .card-title,body.theme-olive .menu-price,body.theme-olive .cart-item-note-text,body.theme-olive .cart-item-price,body.theme-olive .total-value,body.theme-olive .modal-title,body.theme-olive .section-title,body.theme-olive .order-number,body.theme-olive .order-total{color:var(--primary)}
+body.theme-olive .queue-input{color:var(--primary)!important;background:var(--primary-light)!important;border-color:var(--border)!important}
+body.theme-olive .pay-type-btn.active{color:var(--primary);border-color:var(--primary);background:var(--primary-light)}
+body.theme-olive .theme-style-btn.active{background:rgba(255,255,255,.3);border-color:rgba(255,255,255,.6)}
+@media(prefers-reduced-transparency:reduce){body.theme-olive .card,body.theme-olive .menu-card,body.theme-olive .stat-card,body.theme-olive .cart-item,body.theme-olive .modal,body.theme-olive .bottom-nav{backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+/* Shared readability, hierarchy, and touch feedback improvements */
+:where(button,input,select):focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 45%,transparent);outline-offset:2px}
+.card-title,.section-title{font-size:1rem;line-height:1.35}
+.form-label{font-size:.68rem;letter-spacing:.55px}
+.form-control{font-size:.88rem;min-height:44px}
+.category-btn{min-height:42px;padding-inline:18px}
+.category-btn.active{box-shadow:0 7px 18px color-mix(in srgb,var(--primary) 25%,transparent);}
+.menu-name{font-size:.82rem;line-height:1.4}
+.menu-price{font-size:.9rem}
+.spicy-btn{min-height:34px;font-size:.62rem}
+.qty-btn-main{width:34px;height:34px}
+.mini-btn{width:32px;height:32px}
+.btn-cancel-icon{width:34px;height:34px}
+.pay-type-btn{min-height:42px;font-size:.76rem}
+.btn{min-height:44px;font-size:.8rem}
+.small-btn{min-height:34px;padding:7px 10px;font-size:.67rem}
+.recipe-ingredient-option{transition:background .18s,border-color .18s,box-shadow .18s}
+.recipe-ingredient-option:has(input:checked){background:var(--primary-light);border-color:var(--primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 12%,transparent)}
+body.theme-olive .btn-primary{background:linear-gradient(135deg,var(--primary-dark),var(--primary));box-shadow:0 8px 20px rgba(53,69,29,.22)}
+body.theme-olive .category-btn.active{background:linear-gradient(135deg,var(--primary-dark),var(--primary));}
+body.theme-olive .recipe-ingredient-option:has(input:checked){background:rgba(106,132,66,.2)}
+button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,border-color .18s,box-shadow .18s,color .18s,transform .18s}
+@media(hover:hover){.btn:hover,.small-btn:hover,.category-btn:hover,.pay-type-btn:hover,.spicy-btn:hover{filter:brightness(1.04)}}
+@media(max-width:480px){.category-btn{padding-inline:14px}.small-btn{min-height:36px}.pay-type-btn{min-height:44px}}
+
+.mobile-cart-dock{display:none}
+@media(max-width:767px){
+    body{padding-bottom:calc(var(--nav-height) + 100px + env(safe-area-inset-bottom))}
+    body:has(#pane-pos.active) .mobile-cart-dock:not([hidden]){
+        position:fixed;z-index:950;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom));
+        display:flex;align-items:center;justify-content:space-between;gap:12px;
+        min-height:62px;padding:9px 11px 9px 15px;border:1px solid var(--border);border-radius:17px;
+        color:var(--text);background:rgba(255,254,250,.9);box-shadow:0 12px 32px rgba(15,23,42,.2);
+        backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+    }
+    body.dark-mode:has(#pane-pos.active) .mobile-cart-dock:not([hidden]){background:rgba(30,41,59,.92)}
+    body.theme-olive:has(#pane-pos.active) .mobile-cart-dock:not([hidden]){background:rgba(255,254,250,.78);border-color:rgba(107,121,83,.28)}
+    body.theme-olive.dark-mode:has(#pane-pos.active) .mobile-cart-dock:not([hidden]){background:rgba(37,51,39,.88);border-color:var(--border)}
+    .mobile-cart-dock-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+    .mobile-cart-dock-count{font-size:.65rem;color:var(--muted);font-weight:800}
+    .mobile-cart-dock-total{font-size:.95rem;color:var(--primary);font-weight:800;white-space:nowrap}
+    .mobile-cart-dock button{min-height:42px;padding:0 14px;border:0;border-radius:12px;color:#fff;background:linear-gradient(135deg,var(--primary-dark),var(--primary));font-size:.72rem;font-weight:800;white-space:nowrap}
+    .cart-card{scroll-margin-top:110px}
+}
 </style>
 </head>
 
@@ -1052,6 +1135,7 @@ body.dark-mode .modal-title { color: #f472b6; }
         </div>
 
         <div class="header-controls">
+            <button class="theme-toggle-btn theme-style-btn" onclick="toggleOliveTheme()" id="styleThemeBtn" title="Aktifkan Tema 2: Olive Glass" aria-label="Aktifkan Tema 2 Olive Glass">🌿</button>
             <button class="theme-toggle-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Ganti Mode Gelap/Terang">🌙</button>
 
             <button class="theme-toggle-btn" onclick="toggleOrderNotifications()" id="orderNotificationBtn" title="Aktifkan notifikasi pesanan" aria-label="Aktifkan notifikasi pesanan" aria-pressed="false">🔔</button>
@@ -1091,13 +1175,6 @@ body.dark-mode .modal-title { color: #f472b6; }
                         <span class="card-title-icon">🍽️</span> MENU MAKANAN
                     </div>
                     <span id="menuCountLabel" style="font-size:.62rem; color:var(--muted); font-weight:700;">0 Menu</span>
-                </div>
-
-                <div class="pos-toolbar">
-                    <div class="search-box">
-                        <span>🔍</span>
-                        <input id="menuSearch" class="form-control" type="text" placeholder="Cari menu..." oninput="renderMenuGrid()">
-                    </div>
                 </div>
 
                 <div class="category-tabs" id="categoryTabsContainer">
@@ -1370,7 +1447,7 @@ body.dark-mode .modal-title { color: #f472b6; }
 
             <div style="background:var(--surface-soft); padding:12px; border-radius:12px; margin-bottom:12px; border:1px solid var(--border);">
                 <label class="form-label" style="color:var(--primary)">PILIH BAHAN YANG DIPAKAI (OTOMATIS BERKURANG SAAT PESANAN SELESAI/DISIMPAN)</label>
-                <div id="recipeIngredientsContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:8px; margin-top:8px;">
+                <div id="recipeIngredientsContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:8px; margin-top:8px;">
                 </div>
             </div>
 
@@ -1501,6 +1578,14 @@ body.dark-mode .modal-title { color: #f472b6; }
         <span class="nav-icon">📊</span> Riwayat
     </button>
 </nav>
+
+<div id="mobileCartDock" class="mobile-cart-dock" hidden aria-live="polite">
+    <div class="mobile-cart-dock-info">
+        <span id="mobileCartDockCount" class="mobile-cart-dock-count">0 item</span>
+        <span id="mobileCartDockTotal" class="mobile-cart-dock-total">Rp 0</span>
+    </div>
+    <button type="button" onclick="openMobileCart()">🛒 Lihat Keranjang</button>
+</div>
 
 
 
@@ -1681,6 +1766,16 @@ window.toggleDarkMode = function() {
     const isDark = document.body.classList.contains("dark-mode");
     localStorage.setItem("themePreference", isDark ? "dark" : "light");
     document.getElementById("themeToggleBtn").innerText = isDark ? "☀️" : "🌙";
+};
+
+window.toggleOliveTheme = function(){
+    const enabled = document.body.classList.toggle("theme-olive");
+    localStorage.setItem("colorThemePreference", enabled ? "olive" : "classic");
+    const button = document.getElementById("styleThemeBtn");
+    button.classList.toggle("active", enabled);
+    button.title = enabled ? "Kembali ke Tema 1: Marun" : "Aktifkan Tema 2: Olive Glass";
+    button.setAttribute("aria-label", button.title);
+    document.querySelector('meta[name="theme-color"]').content = enabled ? "#556b2f" : "#5c061c";
 };
 
 function refreshOrderNotificationButton(){
@@ -1948,6 +2043,13 @@ if (localStorage.getItem("themePreference") === "dark") {
     document.body.classList.add("dark-mode");
     document.getElementById("themeToggleBtn").innerText = "☀️";
 }
+if(localStorage.getItem("colorThemePreference") === "olive"){
+    document.body.classList.add("theme-olive");
+    document.getElementById("styleThemeBtn").classList.add("active");
+    document.getElementById("styleThemeBtn").title = "Kembali ke Tema 1: Marun";
+    document.getElementById("styleThemeBtn").setAttribute("aria-label", "Kembali ke Tema 1: Marun");
+    document.querySelector('meta[name="theme-color"]').content = "#556b2f";
+}
 
 
 /* =========================================================
@@ -2052,6 +2154,11 @@ window.switchTab=function(tab){
     document.querySelectorAll(".nav-btn").forEach(el=>el.classList.remove("active"));
     document.getElementById(`pane-${tab}`).classList.add("active");
     document.getElementById(`btn-tab-${tab}`).classList.add("active");
+};
+
+window.openMobileCart=function(){
+    const cartCard = document.querySelector(".cart-card");
+    if(cartCard) cartCard.scrollIntoView({behavior:"smooth", block:"start"});
 };
 
 
@@ -2213,8 +2320,8 @@ function renderIngredients(){
         `;
 
         recipeContainer.innerHTML += `
-            <label style="display:flex; align-items:center; gap:5px; font-size:.7rem; font-weight:700;">
-                <input type="checkbox" class="recipe-ing-check" value="${key}"> ${escapeHtml(ing.name)} (1 ${escapeHtml(ing.unit)}/porsi)
+            <label class="recipe-ingredient-option">
+                <input type="checkbox" class="recipe-ing-check" value="${key}"> <span>${escapeHtml(ing.name)} (1 ${escapeHtml(ing.unit)}/porsi)</span>
             </label>
         `;
     });
@@ -2397,14 +2504,11 @@ function renderCategoryTabs(){
 
 function renderMenuGrid(){
     const container = document.getElementById("menuGridContainer");
-    const search = document.getElementById("menuSearch").value.trim().toLowerCase();
 
     const menuList = Object.values(dbMenus);
 
     const filtered = menuList.filter(menu => {
-        const sameCategory = (menu.cat || "Umum") === activeFilter;
-        const matchSearch = (menu.name || "").toLowerCase().includes(search);
-        return sameCategory && matchSearch;
+        return (menu.cat || "Umum") === activeFilter;
     });
 
     document.getElementById("menuCountLabel").innerText = `${filtered.length} Menu`;
@@ -2413,8 +2517,7 @@ function renderMenuGrid(){
         container.innerHTML = `
             <div style="grid-column:1/-1; text-align:center; padding:50px 15px; color:var(--muted);">
                 <div style="font-size:32px; margin-bottom:8px;">🔍</div>
-                <strong style="display:block; color:var(--text); font-size:.8rem;">Menu tidak ditemukan</strong>
-                <small style="font-size:.65rem;">Coba gunakan kata pencarian lain</small>
+                <strong style="display:block; color:var(--text); font-size:.8rem;">Belum ada menu di kategori ini</strong>
             </div>
         `;
         return;
@@ -2602,6 +2705,9 @@ function renderCart(){
     document.getElementById("grandTotal").innerText = rupiah(total);
     document.getElementById("cartItemCount").innerText = `${totalQty} Item`;
     document.getElementById("cartSummaryText").innerText = `${totalQty} porsi • ${cart.length} jenis menu`;
+    document.getElementById("mobileCartDockCount").innerText = `${totalQty} item • ${cart.length} jenis menu`;
+    document.getElementById("mobileCartDockTotal").innerText = `Rp ${rupiah(total)}`;
+    document.getElementById("mobileCartDock").hidden = cart.length === 0;
 
     updateSubmitButton();
 }
