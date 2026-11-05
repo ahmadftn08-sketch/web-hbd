@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5c061c">
+<title>Layar Pelanggan | Kedai Arsyla</title>
+<style>
+:root{font-family:Arial,system-ui,sans-serif;color:#1f2937;background:#f7f5f2;font-synthesis:none;font-weight:500}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 0%,rgba(214,168,79,.18),transparent 34%),radial-gradient(ellipse at 90% 25%,rgba(150,25,57,.13),transparent 38%),#f7f5f2}
+header{display:flex;align-items:center;gap:16px;padding:15px 24px;background:linear-gradient(120deg,#5c061c,#3b0311);color:#fff;box-shadow:0 10px 30px rgba(59,3,17,.2)}
+.logo{width:58px;height:58px;object-fit:cover;border-radius:50%;background:#fff;border:2px solid #d6a84f;padding:2px}
+.brand{flex:1;min-width:0}.brand h1{font-size:clamp(1.05rem,2vw,1.7rem);margin:0;font-weight:800}.brand p{font-size:.82rem;margin:5px 0 0;color:#f5dfe5}
+.clock-wrap{text-align:right;font-weight:700}.clock{font-size:1.1rem}.date{margin-top:4px;color:#f5dfe5;font-size:.78rem}
+button{font:inherit;cursor:pointer}.fullscreen-btn{border:1px solid #ffffff55;border-radius:10px;padding:9px 12px;color:#fff;background:#ffffff18;font-size:.8rem;font-weight:700}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(270px,340px);gap:18px;max-width:1600px;margin:auto;padding:20px}
+.board,.payment{border:1px solid #e5e7eb;border-radius:22px;background:#ffffffd9;box-shadow:0 14px 40px #18251b12;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.board{padding:clamp(16px,2.4vw,32px)}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px;color:#5c061c;font-size:1rem;font-weight:800}
+.connection{display:flex;align-items:center;gap:7px;font-size:.72rem;color:#047857}.dot{width:9px;height:9px;border-radius:50%;background:#10b981;box-shadow:0 0 10px #10b98188}.connection.offline{color:#b91c1c}.connection.offline .dot{background:#ef4444;box-shadow:0 0 10px #ef444488}
+.current-card{padding:clamp(18px,3vw,34px);border-radius:18px;color:#fff;background:linear-gradient(135deg,#5c061c,#3b0311);text-align:center;box-shadow:0 12px 28px #5c061c30}
+.current-label{font-weight:800;font-size:.85rem;letter-spacing:.1em;color:#f5dfe5}.current-queue{font-size:clamp(3.5rem,10vw,8rem);line-height:1;font-weight:900;letter-spacing:.03em;margin:13px 0}.current-customer{font-size:clamp(1.1rem,2vw,1.8rem);font-weight:800}.current-items{margin:13px auto 0;max-width:760px;font-size:clamp(.85rem,1.5vw,1.1rem);line-height:1.6;color:#fff5f6}
+.empty-current{padding:34px 16px;border:1px dashed #d9c8cc;border-radius:16px;text-align:center;color:#737b88;font-size:1rem;font-weight:700}
+.section-subtitle{margin:22px 0 10px;color:#5c061c;font-size:.84rem;font-weight:800;letter-spacing:.04em}
+.waiting-list,.ready-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
+.waiting-card,.ready-card{padding:12px 14px;border:1px solid #e5e7eb;border-radius:13px;background:#fff}.waiting-card{border-left:4px solid #d6a84f}.ready-card{border-left:4px solid #10b981;background:#f0fdf4}
+.waiting-queue,.ready-queue{font-size:1.4rem;font-weight:900;color:#5c061c}.waiting-name,.ready-name{margin-top:3px;font-size:.82rem;font-weight:700}.ready-queue{color:#047857}
+.payment{align-self:start;position:sticky;top:18px;padding:20px;text-align:center}.payment h2{font-size:1rem;color:#5c061c;margin:0}.payment-label{margin:5px 0 15px;color:#6b7280;font-size:.76rem}.qr-frame{display:flex;align-items:center;justify-content:center;min-height:240px;padding:10px;border-radius:16px;background:#fff;border:1px solid #e5e7eb}.qr{max-width:100%;width:220px;height:220px;object-fit:contain}.qr-fallback{color:#6b7280;font-size:.8rem}.pay-name{font-size:.88rem;font-weight:800;color:#5c061c;margin-top:13px}.pay-account{font-size:1.08rem;letter-spacing:.04em;font-weight:900;margin-top:6px}.pay-owner{font-size:.78rem;color:#6b7280;margin-top:4px}.payment-note{font-size:.67rem;color:#858b96;line-height:1.5;margin-top:14px}
+.ready-section:empty{display:none}
+.share-display-card{display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#ffffffb8;text-align:left}
+.share-display-qr{width:92px;height:92px;flex:none;object-fit:contain;border-radius:8px;background:#fff}
+.share-display-copy{min-width:0}.share-display-copy strong{display:block;color:#5c061c;font-size:.8rem}.share-display-copy span{display:block;margin-top:4px;color:#6b7280;font-size:.7rem;line-height:1.4}
+.share-display-copy a{display:inline-block;margin-top:7px;color:#5c061c;font-size:.7rem;font-weight:800;text-decoration:none}
+body.theme-olive .share-display-copy strong,body.theme-olive .share-display-copy a{color:#556b2f}
+body.dark-mode .share-display-card{background:#252a33;border-color:#424955}
+body.dark-mode .share-display-copy strong,body.dark-mode .share-display-copy a{color:#f2b7c6}
+body.dark-mode .share-display-copy span{color:#b7bec9}
+@media(max-width:850px){.share-display-card{display:none}}
+@media(max-width:850px){main{grid-template-columns:1fr}.payment{position:static;display:grid;grid-template-columns:1fr 220px;align-items:center;gap:0 18px;text-align:left}.payment h2,.payment-label,.pay-name,.pay-account,.pay-owner,.payment-note{grid-column:1}.qr-frame{grid-column:2;grid-row:1 / span 6;min-height:200px}.qr{width:180px;height:180px}}
+@media(max-width:560px){
+    header{display:grid;grid-template-columns:44px minmax(0,1fr) auto;padding:10px 12px;gap:9px}
+    .logo{width:44px;height:44px}
+    .brand{min-width:0}
+    .brand h1{font-size:1rem;line-height:1.15}
+    .brand p{font-size:.64rem;line-height:1.25;margin-top:3px;overflow-wrap:anywhere}
+    .clock-wrap{display:none}
+    .fullscreen-btn{min-height:40px;padding:7px 9px;font-size:.68rem;white-space:nowrap}
+    main{grid-template-columns:minmax(0,1fr);padding:9px;gap:9px}
+    .board,.payment{min-width:0;padding:13px;border-radius:15px}
+    .section-heading{font-size:.88rem;margin-bottom:12px}
+    .connection{font-size:.65rem;white-space:nowrap}
+    .current-card{padding:20px 12px}
+    .current-queue{font-size:clamp(3rem,18vw,5rem);margin:10px 0}
+    .current-items{font-size:.88rem;overflow-wrap:anywhere}
+    .empty-current{padding:22px 12px;font-size:.88rem}
+    .section-subtitle{margin-top:17px;font-size:.76rem}
+    .waiting-list,.ready-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+    .waiting-card,.ready-card{min-width:0;padding:9px;border-radius:11px}
+    .waiting-queue,.ready-queue{font-size:1.15rem}
+    .waiting-name,.ready-name{font-size:.74rem;overflow-wrap:anywhere}
+    .payment{position:static;display:block;text-align:center}
+    .payment h2{font-size:.95rem}
+    .qr-frame{min-height:190px}
+    .qr{width:min(180px,65vw);height:min(180px,65vw)}
+    .pay-account{font-size:1rem;overflow-wrap:anywhere}
+    .payment-note{font-size:.65rem}
+}
+@media(max-width:360px){
+    header{grid-template-columns:38px minmax(0,1fr);}
+    .logo{width:38px;height:38px}
+    .fullscreen-btn{grid-column:2;justify-self:start;min-height:34px;padding:5px 8px}
+    .brand h1{font-size:.92rem}
+    .brand p{font-size:.61rem}
+    .waiting-list,.ready-list{grid-template-columns:1fr}
+    .current-label{font-size:.75rem}
+}
+body.theme-olive{background:radial-gradient(ellipse at 10% 0%,rgba(183,220,119,.2),transparent 34%),radial-gradient(ellipse at 90% 25%,rgba(85,107,47,.18),transparent 38%),#f4f6ef}
+body.theme-olive header{background:linear-gradient(120deg,#556b2f,#35451d);box-shadow:0 10px 30px rgba(53,69,29,.2)}
+body.theme-olive .section-heading,body.theme-olive .section-subtitle,body.theme-olive .waiting-queue,body.theme-olive .payment h2,body.theme-olive .pay-name{color:#556b2f}
+body.theme-olive .current-card{background:linear-gradient(135deg,#718c3f,#35451d);box-shadow:0 12px 28px rgba(53,69,29,.22)}
+body.dark-mode{color:#e5e7eb;background:radial-gradient(ellipse at 10% 0%,rgba(122,20,48,.2),transparent 34%),#111318}
+body.dark-mode header{background:linear-gradient(120deg,#420516,#26020d)}
+body.dark-mode .board,body.dark-mode .payment{background:rgba(31,35,43,.9);border-color:#3f4652;box-shadow:0 14px 40px #0005}
+body.dark-mode .section-heading,body.dark-mode .section-subtitle,body.dark-mode .payment h2,body.dark-mode .pay-name{color:#f2b7c6}
+body.dark-mode .waiting-card{background:#252a33;border-color:#424955;color:#f3f4f6}
+body.dark-mode .waiting-queue{color:#f2b7c6}
+body.dark-mode .ready-card{background:#123126;border-color:#176247;color:#e7fff2}
+body.dark-mode .ready-queue{color:#6ee7b7}
+body.dark-mode .empty-current{border-color:#555d69;color:#c1c7d0}
+body.dark-mode .payment-label,body.dark-mode .pay-owner,body.dark-mode .payment-note,body.dark-mode .qr-fallback{color:#b7bec9}
+body.dark-mode .qr-frame{background:#fff;border-color:#4b5563}
+body.dark-mode.theme-olive{background:radial-gradient(ellipse at 10% 0%,rgba(106,139,55,.24),transparent 34%),#111610}
+body.dark-mode.theme-olive header{background:linear-gradient(120deg,#3e5124,#263318)}
+body.dark-mode.theme-olive .section-heading,body.dark-mode.theme-olive .section-subtitle,body.dark-mode.theme-olive .payment h2,body.dark-mode.theme-olive .pay-name{color:#c5df8d}
+body.dark-mode.theme-olive .current-card{background:linear-gradient(135deg,#5b7432,#2f3f1b)}
+</style>
+</head>
+<body>
+<header>
+    <img id="storeLogo" class="logo" src="logo2.svg" alt="Logo kedai">
+    <div class="brand"><h1 id="storeName">KEDAI ARSYLA</h1><p id="storeAddress">Informasi pesanan pelanggan</p></div>
+    <div class="clock-wrap"><div id="liveClock" class="clock">--:--</div><div id="liveDate" class="date"></div></div>
+    <button id="fullscreenButton" class="fullscreen-btn" type="button">⛶ Layar penuh</button>
+</header>
+<main>
+    <section class="board">
+        <div class="section-heading"><span>📣 INFORMASI PESANAN</span><span id="connectionState" class="connection"><i class="dot"></i> Terhubung</span></div>
+        <div id="currentOrder" class="empty-current">Belum ada pesanan yang sedang disiapkan.</div>
+        <div class="section-subtitle">MENUNGGU DIPROSES</div>
+        <div id="waitingOrders" class="waiting-list"></div>
+        <div id="readySection" class="ready-section">
+            <div class="section-subtitle">SIAP DIAMBIL</div>
+            <div id="readyOrders" class="ready-list"></div>
+        </div>
+    </section>
+    <aside class="payment">
+        <h2 id="paymentQrLabel">PEMBAYARAN</h2>
+        <p class="payment-label" id="paymentDescription">Scan QR atau transfer ke rekening berikut</p>
+        <div class="qr-frame"><img id="paymentQr" class="qr" alt="QR pembayaran" hidden><span id="qrFallback" class="qr-fallback">Info pembayaran belum tersedia</span></div>
+        <div id="paymentName" class="pay-name">BANK BRI</div>
+        <div id="paymentAccount" class="pay-account">7706-0100-7225-509</div>
+        <div id="paymentOwner" class="pay-owner">a.n. Feebriana Saputri</div>
+        <p class="payment-note">Jika belum ada gambar QRIS, QR yang ditampilkan berisi nomor rekening untuk membantu transfer BRImo.</p>
+        <div class="share-display-card">
+            <img id="shareDisplayQr" class="share-display-qr" alt="QR untuk membuka antrean di HP" loading="lazy">
+            <div class="share-display-copy">
+                <strong>📱 Pantau Antrean di HP</strong>
+                <span>Scan QR ini untuk melihat antrean dari ponsel.</span>
+                <a id="shareDisplayLink" href="#" target="_blank" rel="noopener">Buka halaman antrean ↗</a>
+            </div>
+        </div>
+    </aside>
+</main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBmpfHRnn53JeedUa5mb6_6eQHNgTKirfqo",
+    authDomain: "kasir-arsyla-v2.firebaseapp.com",
+    projectId: "kasir-arsyla-v2",
+    storageBucket: "kasir-arsyla-v2.firebasestorage.app",
+    messagingSenderId: "91708664773",
+    appId: "1:91708664773:web:1d8f1c123dfd1f5d1279ac",
+    measurementId: "G-L76Q7CDGZS",
+    databaseURL: "https://kasir-arsyla-v2-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+const db = getDatabase(initializeApp(firebaseConfig));
+const bankInfo = {name:"BANK BRI",account:"7706-0100-7225-509",owner:"Feebriana Saputri"};
+const readySeenAt = new Map();
+let latestOrders = {};
+
+const customerDisplayUrl=new URL(window.location.href);
+customerDisplayUrl.search="";
+customerDisplayUrl.hash="";
+document.getElementById("shareDisplayLink").href=customerDisplayUrl.href;
+document.getElementById("shareDisplayQr").src=`https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=4&data=${encodeURIComponent(customerDisplayUrl.href)}`;
+
+function syncDisplayTheme(){
+    const isOlive=localStorage.getItem("colorThemePreference")==="olive";
+    const isDark=localStorage.getItem("themePreference")==="dark";
+    document.body.classList.toggle("theme-olive",isOlive);
+    document.body.classList.toggle("dark-mode",isDark);
+    document.querySelector('meta[name="theme-color"]').content=isDark?(isOlive?"#3e5124":"#420516"):(isOlive?"#556b2f":"#5c061c");
+}
+syncDisplayTheme();
+window.addEventListener("storage",event=>{
+    if(event.key==="themePreference"||event.key==="colorThemePreference"||event.key===null) syncDisplayTheme();
+});
+
+function escapeHtml(value){return String(value ?? "").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));}
+function getTodayKey(){const now=new Date();return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;}
+function queueNumber(order){const number=parseInt(String(order.queue || "").replace(/\D/g,""),10);return Number.isFinite(number)?number:0;}
+function renderDetails(order){return (order.items || []).map(item=>{
+    const addons=(item.addons || []).map(addon=>` + ${escapeHtml(addon.name)}`).join("");
+    return `${escapeHtml(item.name)} × ${Number(item.qty || 0)}${addons}`;
+}).join(" · ");}
+function renderOrders(orders){
+    const today=getTodayKey();
+    const todayOrders=Object.values(orders || {}).filter(order=>order.orderDateKey===today && !order.isArchived);
+    const processing=todayOrders.filter(order=>order.status==="Diproses").sort((a,b)=>queueNumber(a)-queueNumber(b));
+    const waiting=todayOrders.filter(order=>order.status==="Menunggu").sort((a,b)=>queueNumber(a)-queueNumber(b));
+    const ready=todayOrders.filter(order=>order.status==="Selesai").map(order=>{
+        const identity=`${order.orderDateKey}-${order.queue}-${order.customer}`;
+        let completedAt=Number(order.completedAt);
+        if(!Number.isFinite(completedAt) || completedAt<=0){
+            if(!readySeenAt.has(identity)) readySeenAt.set(identity,Date.now());
+            completedAt=readySeenAt.get(identity);
+        }
+        return {...order,displayCompletedAt:completedAt};
+    }).filter(order=>order.displayCompletedAt>Date.now()-15*60*1000).sort((a,b)=>b.displayCompletedAt-a.displayCompletedAt).slice(0,6);
+    const current=document.getElementById("currentOrder");
+    if(processing.length){
+        const order=processing[0];
+        current.className="current-card";
+        current.innerHTML=`<div class="current-label">SEDANG DISIAPKAN</div><div class="current-queue">${escapeHtml(order.queue || "-")}</div><div class="current-customer">${escapeHtml(order.customer || "Pelanggan")}</div><div class="current-items">${renderDetails(order)}</div>`;
+        if(processing.length>1) current.innerHTML+=`<div class="current-label" style="margin-top:16px">${processing.length-1} pesanan lain juga sedang disiapkan</div>`;
+    }else{
+        current.className="empty-current";
+        current.textContent="Belum ada pesanan yang sedang disiapkan.";
+    }
+    document.getElementById("waitingOrders").innerHTML=waiting.length
+        ? waiting.slice(0,8).map(order=>`<article class="waiting-card"><div class="waiting-queue">${escapeHtml(order.queue || "-")}</div><div class="waiting-name">${escapeHtml(order.customer || "Pelanggan")}</div></article>`).join("")
+        : '<div class="empty-current" style="grid-column:1/-1;padding:16px">Tidak ada antrean menunggu.</div>';
+    document.getElementById("readyOrders").innerHTML=ready.map(order=>`<article class="ready-card"><div class="ready-queue">${escapeHtml(order.queue || "-")}</div><div class="ready-name">${escapeHtml(order.customer || "Pelanggan")} · Siap diambil</div></article>`).join("");
+}
+function safeImageUrl(value){
+    if(!value) return "";
+    try{const url=new URL(value,location.href);return ["https:","http:"].includes(url.protocol)?url.href:"";}catch{return "";}
+}
+function applySettings(settings){
+    const data=settings || {};
+    document.getElementById("storeName").textContent=data.name || "KEDAI ARSYLA";
+    document.title=`Layar Pelanggan | ${data.name || "Kedai Arsyla"}`;
+    document.getElementById("storeAddress").textContent=[data.address,data.phone ? `Telp: ${data.phone}` : ""].filter(Boolean).join(" · ") || "Informasi pesanan pelanggan";
+    document.getElementById("storeLogo").src=safeImageUrl(data.logo) || "logo2.svg";
+    const customQr=safeImageUrl(data.paymentQrUrl);
+    const qr=document.getElementById("paymentQr");
+    const fallback=document.getElementById("qrFallback");
+    document.getElementById("paymentQrLabel").textContent=customQr ? (data.paymentQrLabel || "QRIS") : "TRANSFER BRImo";
+    document.getElementById("paymentDescription").textContent=customQr ? "Scan QR pembayaran kedai" : "Scan QR nomor rekening atau transfer manual";
+    document.getElementById("paymentName").textContent=customQr ? (data.paymentQrLabel || "QRIS Kedai Arsyla") : bankInfo.name;
+    document.getElementById("paymentAccount").textContent=customQr ? "" : bankInfo.account;
+    document.getElementById("paymentOwner").textContent=customQr ? "" : `a.n. ${bankInfo.owner}`;
+    if(customQr){
+        qr.src=customQr;qr.hidden=false;fallback.hidden=true;
+    }else{
+        qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(bankInfo.account)}`;
+        qr.hidden=false;fallback.hidden=true;
+    }
+    qr.onerror=()=>{
+        qr.hidden=true;fallback.hidden=false;fallback.textContent="QR tidak dapat dimuat. Gunakan nomor rekening di bawah.";
+        if(customQr){
+            document.getElementById("paymentQrLabel").textContent="TRANSFER BRImo";
+            document.getElementById("paymentDescription").textContent="Scan QR nomor rekening atau transfer manual";
+            document.getElementById("paymentName").textContent=bankInfo.name;
+            document.getElementById("paymentAccount").textContent=bankInfo.account;
+            document.getElementById("paymentOwner").textContent=`a.n. ${bankInfo.owner}`;
+        }
+    };
+}
+function updateClock(){
+    const now=new Date();
+    document.getElementById("liveClock").textContent=now.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+    document.getElementById("liveDate").textContent=now.toLocaleDateString("id-ID",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
+}
+document.getElementById("fullscreenButton").addEventListener("click",async()=>{
+    try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen();}catch(error){console.warn("Mode layar penuh tidak tersedia:",error);}
+});
+onValue(ref(db,"orders"),snapshot=>{
+    latestOrders=snapshot.val() || {};
+    renderOrders(latestOrders);
+},error=>{
+    console.error("Layar pelanggan gagal membaca pesanan:",error);
+    document.getElementById("connectionState").classList.add("offline");
+    document.getElementById("connectionState").textContent="Koneksi terputus";
+});
+onValue(ref(db,".info/connected"),snapshot=>{
+    const connected=snapshot.val()===true;
+    document.getElementById("connectionState").classList.toggle("offline",!connected);
+    document.getElementById("connectionState").innerHTML=connected?'<i class="dot"></i> Terhubung':'<i class="dot"></i> Menyambungkan';
+});
+onValue(ref(db,"settings"),snapshot=>applySettings(snapshot.val()),error=>console.error("Pengaturan layar pelanggan gagal dimuat:",error));
+setInterval(()=>renderOrders(latestOrders),5000);
+updateClock();setInterval(updateClock,1000);
+</script>
+</body>
+</html>

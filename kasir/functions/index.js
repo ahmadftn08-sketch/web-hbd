@@ -80,10 +80,22 @@ exports.notifyLowTortillaStock = onValueWritten(
   event => {
     const before = event.data.before.val() || {};
     const after = event.data.after.val() || {};
-    if (!String(after.name || "").toLowerCase().includes("tortilla")) return null;
     const quantity = Number(after.qty);
     const previousQuantity = Number(before.qty);
-    if (!Number.isFinite(quantity) || quantity > 5 || (Number.isFinite(previousQuantity) && previousQuantity <= 5)) return null;
-    return sendPush({ title: "Stok tortilla menipis", body: `Tersisa ${quantity} ${after.unit || "pcs"}. Segera tambah stok.`, type: "stock", tag: "tortilla-low-stock" });
+    const isTortilla = String(after.name || "").toLowerCase().includes("tortilla");
+    const threshold = after.minQty === undefined ? (isTortilla ? 5 : 0) : Number(after.minQty);
+    const previousThreshold = before.minQty === undefined
+      ? (String(before.name || "").toLowerCase().includes("tortilla") ? 5 : 0)
+      : Number(before.minQty);
+    const isLow = Number.isFinite(quantity) && Number.isFinite(threshold) && threshold > 0 && quantity <= threshold;
+    const wasLow = Number.isFinite(previousQuantity) && Number.isFinite(previousThreshold) && previousThreshold > 0 && previousQuantity <= previousThreshold;
+    if (!isLow || wasLow) return null;
+    const ingredientName = after.name || "Bahan baku";
+    return sendPush({
+      title: `Stok ${ingredientName} menipis`,
+      body: `Tersisa ${quantity} ${after.unit || "unit"} (batas minimum ${threshold}). Segera tambah stok.`,
+      type: "stock",
+      tag: `low-stock-${event.params.ingredientId}`
+    });
   }
 );
