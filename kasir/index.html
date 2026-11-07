@@ -1407,7 +1407,7 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
     </div>
     
     <div class="splash-footer">
-        v2.5.0 • Built by TonyDev
+        v2.6.0 • Built by TonyDev
     </div>
 </div>
 
@@ -1661,7 +1661,7 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
                 <button class="settings-close-btn" type="button" onclick="closeSettings()" aria-label="Tutup pengaturan" title="Tutup pengaturan">×</button>
             </div>
             <div class="settings-options-grid">
-                <button class="release-notes-btn" type="button" onclick="showReleaseNotes()" title="Lihat catatan pembaruan v2.5.0">
+                <button class="release-notes-btn" type="button" onclick="showReleaseNotes()" title="Lihat catatan pembaruan v2.6.0">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2 14.1 4l2.8-.3 1.2 2.5 2.5 1.2-.3 2.8 1.8 2.1-1.8 2.1.3 2.8-2.5 1.2-1.2 2.5-2.8-.3-2.1 1.8-2.1-1.8-2.8.3-1.2-2.5-2.5-1.2.3-2.8L2 12.2l1.8-2.1-.3-2.8L6 6.1l1.2-2.5L10 4zM11 7v7h2V7zm0 9v2h2v-2z"/></svg>
                     Catatan Rilis
                 </button>
@@ -2579,10 +2579,15 @@ window.closeModal=function(){
 window.showReleaseNotes=function(){
     const notes = `
         <div style="margin-bottom:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);">
-            <strong style="font-size:1rem;color:var(--primary);">KASIR ARSYLA v2.5.0</strong>
+            <strong style="font-size:1rem;color:var(--primary);">KASIR ARSYLA v2.6.0</strong>
             <div style="margin-top:4px;color:var(--muted);font-size:.75rem;">Pembaruan fitur dan kenyamanan operasional</div>
         </div>
         <ul style="padding-left:20px;margin:0;display:grid;gap:9px;font-size:.78rem;line-height:1.5;">
+            <li>Pengaturan menyediakan daftar semua transaksi lintas tanggal, pencarian, serta filter untuk menandai transaksi uji coba.</li>
+            <li>Transaksi yang ditandai sebagai uji coba tidak dihitung dalam omzet dan laporan, serta tidak ditampilkan di layar pelanggan.</li>
+            <li>Transaksi dapat dihapus dari daftar semua transaksi dengan konfirmasi; stok pesanan yang belum selesai dikembalikan.</li>
+            <li>Reset bulanan hanya menghapus pesanan dan pengeluaran pada bulan berjalan.</li>
+            <li>QR pembayaran di layar pelanggan memakai label yang diatur pada Pengaturan Usaha.</li>
             <li>Menu di keranjang mendapat penanda hijau, pilihan level pedas memakai warna berbeda, dan tombol tambah menu di ponsel diperbesar.</li>
             <li>Mode Layar Dapur menampilkan informasi pesanan dengan fokus untuk staf dapur.</li>
             <li>Laporan laba rugi harian dan bulanan dapat diekspor ke CSV.</li>
