@@ -1717,6 +1717,34 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
             <button class="btn btn-primary" onclick="saveStoreSettings()">💾 Simpan Pengaturan Usaha</button>
         </div>
     </div>
+
+    <div class="card" style="margin-bottom:18px;">
+        <div class="card-inner">
+            <div class="card-title-row">
+                <div class="card-title"><span class="card-title-icon">🧾</span> SEMUA TRANSAKSI</div>
+                <span id="allOrdersCount" class="badge badge-paymethod">0 transaksi</span>
+            </div>
+            <p style="font-size:.7rem;color:var(--muted);margin:0 0 10px;">
+                Cari semua tanggal, termasuk pesanan yang diarsipkan. Tandai pesanan uji coba agar tidak masuk omzet atau layar pelanggan; hapus transaksi hanya setelah dipastikan bukan penjualan.
+            </p>
+            <label class="form-label" for="allOrdersSearch">Cari transaksi</label>
+            <input id="allOrdersSearch" class="form-control" type="search" placeholder="Antrean, nama, tanggal, atau detail pesanan..." oninput="renderAllTransactions()">
+            <label class="form-label" for="allOrdersFilter" style="margin-top:8px;">Tampilkan</label>
+            <select id="allOrdersFilter" class="form-control" onchange="renderAllTransactions()">
+                <option value="all">Semua transaksi</option>
+                <option value="test">Uji coba</option>
+                <option value="regular">Bukan uji coba</option>
+            </select>
+            <div class="table-wrap" style="margin-top:12px;">
+                <table id="allOrdersTable">
+                    <thead><tr><th>Waktu</th><th>Antrean</th><th>Pelanggan</th><th>Pesanan</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="allOrdersEmpty" class="empty-state" style="display:none;">Tidak ada transaksi yang cocok.</div>
+            <div id="allOrdersStatus" role="status" aria-live="polite" style="font-size:.68rem;color:var(--muted);margin-top:8px;"></div>
+        </div>
+    </div>
 </section>
 <!-- =======================================================
      TAB MANAGEMENT (KELOLA MENU & STOK)
@@ -3739,6 +3767,60 @@ window.confirmCancelOrder = function(key){
     });
 };
 
+window.deleteStoredOrder = function(key){
+    const order = dbOrders[key];
+    if(!order){
+        showToast("Transaksi tidak ditemukan atau sudah dihapus.", "warning");
+        return;
+    }
+
+    const restoreStock = order.status !== "Selesai";
+    const stockNotice = restoreStock
+        ? "Stok bahan untuk pesanan yang belum selesai akan dikembalikan."
+        : "Stok tidak diubah karena pesanan sudah selesai.";
+    openModal(
+        "Hapus Transaksi?",
+        `<p style="font-size:.72rem;">Hapus transaksi <strong>${escapeHtml(order.queue || "-")} · ${escapeHtml(order.customer || "Pelanggan")}</strong> (${escapeHtml(order.time || "-")}, Rp ${rupiah(order.total)})?</p><p style="font-size:.68rem;color:var(--red);margin-top:8px;">Data ini akan dihapus permanen. ${stockNotice}</p>`,
+        ()=>{
+            let stockRestored = false;
+            const restorePromise = restoreStock
+                ? restoreIngredientsForOrder(order.items || []).then(()=>{stockRestored=true;})
+                : Promise.resolve();
+
+            restorePromise
+            .then(()=>remove(ref(db, `orders/${key}`)))
+            .then(()=>showToast(`Transaksi ${order.queue || ""} berhasil dihapus.`))
+            .catch(async error=>{
+                if(stockRestored){
+                    try { await deductIngredientsForOrder(order.items || []); }
+                    catch(rollbackError){ console.error("Rollback stok setelah transaksi gagal dihapus:",rollbackError); }
+                }
+                console.error("Gagal menghapus transaksi:",error);
+                showToast("Transaksi gagal dihapus. Periksa koneksi dan stok bahan lalu coba lagi.", "error");
+            });
+        }
+    );
+};
+
+window.toggleOrderTestFlag = function(key){
+    const order = dbOrders[key];
+    if(!order){
+        showToast("Transaksi tidak ditemukan atau sudah dihapus.", "warning");
+        return;
+    }
+
+    const isTest = !order.isTest;
+    update(ref(db, `orders/${key}`), { isTest })
+    .then(()=>showToast(isTest
+        ? `Pesanan ${order.queue || ""} ditandai sebagai uji coba dan tidak dihitung sebagai penjualan.`
+        : `Tanda uji coba pada pesanan ${order.queue || ""} dihapus.`
+    ))
+    .catch(error=>{
+        console.error("Gagal mengubah tanda uji coba transaksi:", error);
+        showToast("Tanda uji coba gagal diperbarui. Periksa koneksi lalu coba lagi.", "error");
+    });
+};
+
 window.editPesanan = function(key){
     const order = dbOrders[key];
     if(!order) return;
@@ -3933,6 +4015,58 @@ function renderExpenseData(){
     document.getElementById("expenseEmpty").style.display = expenseTable.innerHTML === "" ? "block" : "none";
 }
 
+window.renderAllTransactions = function(){
+    const tableBody = document.querySelector("#allOrdersTable tbody");
+    if(!tableBody) return;
+
+    const search = document.getElementById("allOrdersSearch").value.trim().toLowerCase();
+    const filter = document.getElementById("allOrdersFilter").value;
+    const allOrders = Object.entries(dbOrders).sort(([,a],[,b])=>
+        String(b.orderDateKey || "").localeCompare(String(a.orderDateKey || "")) ||
+        String(b.time || "").localeCompare(String(a.time || ""))
+    );
+    const filteredOrders = allOrders.filter(([,order])=>{
+        if(filter === "test" && !order.isTest) return false;
+        if(filter === "regular" && order.isTest) return false;
+        const items = (order.items || []).map(item=>`${item.name || ""} ${item.qty || ""}`).join(" ");
+        const searchable = [
+            order.queue, order.customer, order.time, order.orderDateKey,
+            order.status, order.paymentType, order.total, items
+        ].join(" ").toLowerCase();
+        return searchable.includes(search);
+    });
+
+    tableBody.innerHTML = filteredOrders.map(([key,order])=>{
+        const items = (order.items || []).map(item=>
+            `${escapeHtml(item.name || "Menu")} × ${Number(item.qty || 0)}`
+        ).join(", ") || "-";
+        const status = [
+            order.status || "Status tidak diketahui",
+            order.isArchived ? "Diarsipkan" : "",
+            order.isTest ? "Uji coba" : ""
+        ].filter(Boolean).map(escapeHtml).join(" · ");
+
+        return `
+            <tr>
+                <td>${escapeHtml(order.time || order.orderDateKey || "-")}</td>
+                <td><strong>${escapeHtml(order.queue || "-")}</strong></td>
+                <td>${escapeHtml(order.customer || "-")}</td>
+                <td><div class="item-detail">${items}</div></td>
+                <td><strong>Rp ${rupiah(order.total)}</strong></td>
+                <td>${status}</td>
+                <td><div style="display:flex;gap:4px;flex-wrap:wrap;">
+                    <button class="small-btn" title="${order.isTest ? "Batalkan tanda uji coba" : "Tandai sebagai uji coba"}" aria-label="${order.isTest ? "Batalkan tanda uji coba" : "Tandai sebagai uji coba"} ${escapeHtml(order.queue || "")}" onclick="toggleOrderTestFlag(${toJsString(key)})">${order.isTest ? "✅ Uji Coba" : "🧪 Tandai Uji Coba"}</button>
+                    <button class="small-btn" style="color:var(--red)" title="Hapus transaksi" aria-label="Hapus transaksi ${escapeHtml(order.queue || "")} ${escapeHtml(order.customer || "")}" onclick="deleteStoredOrder(${toJsString(key)})">🗑️ Hapus</button>
+                </div></td>
+            </tr>
+        `;
+    }).join("");
+
+    document.getElementById("allOrdersCount").textContent = `${filteredOrders.length} / ${allOrders.length} transaksi`;
+    document.getElementById("allOrdersEmpty").style.display = filteredOrders.length ? "none" : "block";
+    document.getElementById("allOrdersStatus").textContent = `${filteredOrders.length} transaksi ditampilkan. Pesanan yang dihapus tidak dapat dipulihkan.`;
+};
+
 function renderRealtimeData(){
     const today = getTodayKey();
     const month = getMonthYearKey();
@@ -3954,7 +4088,7 @@ function renderRealtimeData(){
 
     Object.keys(dbOrders).forEach(key=>{
         const order = dbOrders[key];
-        if(order.isExcludedFromRevenue) return;
+        if(order.isExcludedFromRevenue || order.isTest) return;
 
         if(order.status==="Selesai" && order.monthYearKey===month){
             monthlyRevenue += Number(order.total || 0);
@@ -4097,6 +4231,7 @@ function renderRealtimeData(){
     document.getElementById("statMonthlyRevenue").innerText = rupiah(monthlyRevenue);
     document.getElementById("statMonthlyExpense").innerText = rupiah(monthlyExpenseTotal);
 
+    renderAllTransactions();
     filterHistoryTable();
 }
 
@@ -4112,6 +4247,7 @@ window.exportFinancialReport = function(period){
     const periodKey = monthly ? getMonthYearKey() : getTodayKey();
     const reportOrders = Object.values(dbOrders).filter(order=>
         !order.isExcludedFromRevenue &&
+        !order.isTest &&
         order.status === "Selesai" &&
         (monthly ? order.monthYearKey === periodKey : order.orderDateKey === periodKey && !order.isArchived)
     );

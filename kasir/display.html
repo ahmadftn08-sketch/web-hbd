@@ -178,7 +178,7 @@ function renderDetails(order){return (order.items || []).map(item=>{
 }).join(" · ");}
 function renderOrders(orders){
     const today=getTodayKey();
-    const todayOrders=Object.values(orders || {}).filter(order=>order.orderDateKey===today && !order.isArchived && !order.isExcludedFromRevenue);
+    const todayOrders=Object.values(orders || {}).filter(order=>order.orderDateKey===today && !order.isArchived && !order.isExcludedFromRevenue && !order.isTest);
     const processing=todayOrders.filter(order=>order.status==="Diproses").sort((a,b)=>queueNumber(a)-queueNumber(b));
     const waiting=todayOrders.filter(order=>order.status==="Menunggu").sort((a,b)=>queueNumber(a)-queueNumber(b));
     const ready=todayOrders.filter(order=>order.status==="Selesai").map(order=>{
