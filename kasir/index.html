@@ -83,7 +83,9 @@ body.dark-mode {
 
     --border: #334155;
 
-    --primary-light: #311119;
+    --primary: #f2c46d;
+    --primary-dark: #8c5d16;
+    --primary-light: rgba(242,196,109,.14);
     --green-soft: #064e3b;
     --blue-soft: #1e3a8a;
     --orange-soft: #78350f;
@@ -111,9 +113,14 @@ body{
     min-height:100vh;
     background:
         radial-gradient(
-            circle at 90% -10%,
-            rgba(92,6,28,.06),
-            transparent 30%
+            circle at 10% 0%,
+            rgba(92,6,28,.08),
+            transparent 26%
+        ),
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(245,158,11,.05),
+            transparent 22%
         ),
         var(--bg);
 
@@ -327,10 +334,34 @@ div[class*="netlify"] {
 
 .header-controls{
     display:flex;
-    align-items:center;
+    flex-direction:column;
+    align-items:flex-end;
     gap:8px;
     flex-shrink:0;
 }
+.header-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+}
+.header-settings-trigger{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.28);border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-size:1.1rem;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background .2s,transform .2s}
+.header-settings-trigger:hover,.header-settings-trigger[aria-current="page"]{background:rgba(255,255,255,.34)}
+.header-settings-trigger:active{transform:scale(.96)}
+.settings-options-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.settings-options-grid .btn{min-height:44px}
+.settings-options-grid .release-notes-btn{width:100%;justify-content:center;min-height:44px}
+.settings-options-grid .release-notes-btn{color:var(--primary);background:var(--primary-light);border-color:var(--border);backdrop-filter:none;-webkit-backdrop-filter:none}
+.settings-options-grid .header-text-btn{color:var(--text);background:var(--surface-soft);border-color:var(--border);backdrop-filter:none;-webkit-backdrop-filter:none}
+.settings-options-grid .header-text-btn:hover,.settings-options-grid .header-text-btn.active{background:var(--primary-light);border-color:var(--primary)}
+.store-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.store-settings-grid>div{min-width:0}
+.store-settings-grid .wide-field{grid-column:1/-1}
+.store-logo-picker{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}
+.store-logo-picker-copy{flex:1;min-width:190px}
+.store-logo-picker-hint{display:block;color:var(--muted);font-size:.65rem;margin-top:5px}
+.header-controls .notification-volume-control{padding-inline:8px}
 
 .theme-toggle-btn{
     background:rgba(255,255,255,.18);
@@ -453,11 +484,15 @@ body.dark-mode .stock-alert-banner{ color:#fecaca; background:#451a1a; border-co
     }
 
     .header-controls{
-        align-self:flex-end;
+        align-self:stretch;
+        width:100%;
+        align-items:flex-end;
+        gap:6px;
+    }
+
+    .header-actions{
         width:100%;
         justify-content:flex-end;
-        flex-wrap:wrap;
-        gap:6px;
     }
 
     .crowd-mode-btn{ padding:0 8px; font-size:.62rem; }
@@ -485,13 +520,13 @@ body.dark-mode .stock-alert-banner{ color:#fecaca; background:#451a1a; border-co
 
 main{
     width:100%;
-    max-width:1500px;
+    max-width:1550px;
     margin:0 auto;
     padding:18px 14px 30px;
 }
 
 @media(min-width:768px){
-    main{ padding:24px 25px 40px; }
+    main{ padding:22px 24px 42px; }
 }
 
 .tab-pane{ display:none; }
@@ -513,8 +548,8 @@ main{
 
 .pos-layout{
     display:grid;
-    grid-template-columns: minmax(0,1.65fr) minmax(350px,.75fr);
-    gap:18px;
+    grid-template-columns: minmax(0,1.68fr) minmax(340px,.82fr);
+    gap:20px;
     align-items:start;
 }
 
@@ -523,18 +558,23 @@ main{
 }
 
 .card{
-    background:var(--surface);
+    background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
     border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow-md);
+    border-radius:22px;
+    box-shadow:0 18px 40px rgba(15,23,42,.06);
     overflow:hidden;
-    transition: background 0.3s, border-color 0.3s;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-.card-inner{ padding:18px; }
+body.dark-mode .card {
+    background:linear-gradient(180deg, rgba(30,41,59,0.98), rgba(15,23,42,0.94));
+    box-shadow:0 18px 40px rgba(2,6,23,.42);
+}
+
+.card-inner{ padding:20px; }
 
 @media(min-width:768px){
-    .card-inner{ padding:22px; }
+    .card-inner{ padding:22px 24px; }
 }
 
 .card-title-row{
@@ -543,6 +583,8 @@ main{
     align-items:center;
     gap:12px;
     margin-bottom:16px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
 }
 
 .card-title{
@@ -555,7 +597,7 @@ main{
 }
 
 body.dark-mode .card-title {
-    color: #f472b6;
+    color: var(--primary);
 }
 
 .card-title-icon{
@@ -626,7 +668,7 @@ body.dark-mode .card-title {
 .category-btn{
     flex-shrink:0;
     border:1px solid var(--border);
-    background:var(--surface);
+    background:var(--surface-soft);
     color:var(--muted);
     border-radius:12px;
     padding:10px 17px;
@@ -639,7 +681,7 @@ body.dark-mode .card-title {
     color:white;
     background:linear-gradient(135deg, var(--primary), var(--primary-dark));
     border-color:var(--primary);
-    box-shadow:0 6px 15px rgba(92,6,28,.18);
+    box-shadow:0 8px 18px rgba(92,6,28,.18);
 }
 
 .menu-grid{
@@ -649,7 +691,7 @@ body.dark-mode .card-title {
     max-height:calc(100vh - 260px);
     min-height:250px;
     overflow-y:auto;
-    padding:2px 3px 5px 2px;
+    padding:2px 4px 8px 2px;
 }
 
 @media(max-width:991px){
@@ -662,15 +704,20 @@ body.dark-mode .card-title {
 
 .menu-card{
     position:relative;
-    background:var(--surface);
+    background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,1));
     border:1.5px solid var(--border);
-    border-radius:15px;
+    border-radius:16px;
     padding:13px;
     display:flex;
     flex-direction:column;
     min-height:205px;
     transition: transform .2s, box-shadow .2s, border-color .2s;
     overflow:hidden;
+    box-shadow:0 10px 20px rgba(15,23,42,.04);
+}
+
+body.dark-mode .menu-card {
+    background:linear-gradient(180deg, rgba(30,41,59,0.94), rgba(15,23,42,0.97));
 }
 
 .menu-card.out-of-stock {
@@ -679,8 +726,8 @@ body.dark-mode .card-title {
 }
 
 .menu-card:hover{
-    border-color: rgba(92,6,28,.3);
-    box-shadow:var(--shadow-md);
+    border-color: rgba(92,6,28,.32);
+    box-shadow:0 18px 28px rgba(15,23,42,.08);
     transform:translateY(-2px);
 }
 
@@ -726,7 +773,7 @@ body.dark-mode .card-title {
 .menu-price{ color:var(--primary); font-size:.82rem; font-weight:800; margin-top:5px; }
 
 body.dark-mode .menu-price {
-    color: #f472b6;
+    color: var(--primary);
 }
 
 .spicy-title{ font-size:.6rem; color:var(--muted); font-weight:800; text-transform:uppercase; letter-spacing:.5px; margin:13px 0 6px; }
@@ -741,10 +788,10 @@ body.dark-mode .spicy-btn.level-medium.active{color:#fcd34d;background:#78350f;b
 .menu-bottom{ border-top:1px dashed var(--border); margin-top:11px; padding-top:10px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
 .qty-label{ color:var(--muted); font-size:.63rem; font-weight:700; }
 .qty-control{ display:flex; align-items:center; gap:7px; }
-.qty-btn-main{ width:30px; height:30px; border:0; border-radius:9px; background:var(--primary); color:white; font-size:1rem; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(92,6,28,.18); }
+.qty-btn-main{ width:34px; height:34px; min-width:34px; border:0; border-radius:9px; background:var(--primary); color:white; font-size:1rem; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(92,6,28,.18); }
 .qty-btn-main:disabled { background: var(--muted); cursor: not-allowed; opacity: 0.5; box-shadow: none; }
 .qty-number{ min-width:18px; text-align:center; font-size:.82rem; font-weight:800; }
-.qty-btn-main.quick-add-btn{width:40px;height:40px;font-size:1.25rem}
+.qty-btn-main.quick-add-btn{width:34px;height:34px;min-width:34px;font-size:1rem}
 .menu-card.in-cart{border-color:rgba(16,185,129,.72);box-shadow:0 0 0 2px rgba(16,185,129,.16),var(--shadow-md)}
 body.theme-olive .menu-card.in-cart{border-color:rgba(52,211,153,.78);box-shadow:0 0 0 2px rgba(52,211,153,.17),var(--shadow-md)}
 
@@ -761,18 +808,19 @@ body.theme-olive .menu-card.in-cart{border-color:rgba(52,211,153,.78);box-shadow
 .queue-input{ color:var(--primary)!important; text-align:center; font-size:.9rem!important; background:var(--primary-light)!important; border-color:#f1cdd5!important; }
 
 body.dark-mode .queue-input {
-    color: #f472b6 !important;
+    color: var(--primary) !important;
     border-color: #701a2e !important;
 }
 
 .cart-list{ display:flex; flex-direction:column; gap:8px; max-height:350px; overflow-y:auto; padding-right:2px; }
-.cart-item{ display:grid; grid-template-columns: 1fr auto; gap:10px; padding:11px; border:1px solid var(--border); border-radius:12px; background:var(--surface); }
+.cart-item{ display:grid; grid-template-columns: 1fr auto; gap:10px; padding:11px; border:1px solid var(--border); border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.9)); box-shadow:0 6px 14px rgba(15,23,42,.03); }
+body.dark-mode .cart-item { background:linear-gradient(180deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96)); }
 .cart-item-name{ font-size:.76rem; font-weight:800; line-height:1.3; }
 .cart-item-meta{ margin-top:4px; font-size:.63rem; color:var(--muted); }
 .cart-item-note-text{ font-size:.63rem; color:var(--primary); font-weight:700; margin-top:3px; }
-body.dark-mode .cart-item-note-text { color: #f472b6; }
+body.dark-mode .cart-item-note-text { color: var(--primary); }
 .cart-item-price{ margin-top:5px; font-size:.72rem; color:var(--primary); font-weight:800; }
-body.dark-mode .cart-item-price { color: #f472b6; }
+body.dark-mode .cart-item-price { color: var(--primary); }
 .cart-actions{ display:flex; align-items:center; gap:5px; }
 .cart-qty{ min-width:22px; text-align:center; font-size:.72rem; font-weight:800; }
 .mini-btn{ width:26px; height:26px; border:1px solid var(--border); background:var(--surface-soft); color:var(--text); border-radius:7px; font-weight:800; }
@@ -800,15 +848,15 @@ body.dark-mode .cart-item-price { color: #f472b6; }
 .muted-addon-note{color:var(--muted);font-size:.65rem}
 @media(max-width:650px){.addon-admin-grid,.stock-form-grid{grid-template-columns:1fr 1fr}}
 .payment-method-box{ margin-bottom:12px; }
-.pay-type-selector{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:4px; }
+.pay-type-selector{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin-top:4px; }
 .pay-type-btn{ border:1px solid var(--border); background:var(--surface-soft); padding:8px; border-radius:10px; font-size:.7rem; font-weight:800; color:var(--muted); text-align:center; }
 .pay-type-btn.active{ background:var(--primary-light); border-color:var(--primary); color:var(--primary); }
-body.dark-mode .pay-type-btn.active { color: #f472b6; border-color: #f472b6; }
+body.dark-mode .pay-type-btn.active { color: var(--primary); border-color: var(--primary); }
 
 .total-row{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:13px; }
 .total-label{ color:var(--muted); font-size:.68rem; font-weight:800; text-transform:uppercase; }
 .total-value{ color:var(--primary); font-size:1.5rem; font-weight:800; }
-body.dark-mode .total-value { color: #f472b6; }
+body.dark-mode .total-value { color: var(--primary); }
 
 .cart-buttons{ display:grid; grid-template-columns:45px 1fr; gap:8px; }
 
@@ -823,7 +871,7 @@ body.dark-mode .total-value { color: #f472b6; }
 .pay-flex-row{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
 .pay-input-sm{ width:95px; padding:5px 7px; font-size:.7rem; font-weight:800; text-align:right; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text); }
 .btn-pas-sm{ padding:4px 7px; font-size:.6rem; font-weight:800; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--primary); }
-body.dark-mode .btn-pas-sm { color: #f472b6; }
+body.dark-mode .btn-pas-sm { color: var(--primary); }
 .change-tag{ font-size:.65rem; font-weight:800; color:var(--green); }
 .change-tag.minus{ color:var(--red); }
 
@@ -889,7 +937,7 @@ body.dark-mode .order-card.status-card-selesai {
 
 .section-head{ padding:18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
 .section-title{ font-size:.9rem; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:8px; }
-body.dark-mode .section-title { color: #f472b6; }
+body.dark-mode .section-title { color: var(--primary); }
 .live-pill{ display:flex; align-items:center; gap:6px; padding:6px 9px; border-radius:20px; background:var(--green-soft); color:#047857; font-size:.6rem; font-weight:800; }
 body.dark-mode .live-pill { color: #34d399; }
 .order-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -899,12 +947,12 @@ body.dark-mode .live-pill { color: #34d399; }
 .order-card{ border:1px solid var(--border); border-radius:14px; padding:13px; background:var(--surface); box-shadow:var(--shadow-sm); }
 .order-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
 .order-number{ font-size:1rem; font-weight:800; color:var(--primary); }
-body.dark-mode .order-number { color: #f472b6; }
+body.dark-mode .order-number { color: var(--primary); }
 .order-customer{ margin-top:3px; font-size:.68rem; font-weight:700; }
 .order-items{ margin-top:11px; padding:9px; background:var(--surface-soft); border-radius:9px; font-size:.65rem; line-height:1.7; }
 .order-bottom{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:11px; }
 .order-total{ color:var(--primary); font-size:.78rem; font-weight:800; }
-body.dark-mode .order-total { color: #f472b6; }
+body.dark-mode .order-total { color: var(--primary); }
 
 .table-wrap{ overflow-x:auto; }
 table{ width:100%; border-collapse:collapse; min-width:860px; }
@@ -990,7 +1038,7 @@ body.dark-mode .bottom-nav {
 
 .nav-icon{ font-size:1.05rem; line-height:1; }
 .nav-btn.active{ color:var(--primary); background:var(--primary-light); }
-body.dark-mode .nav-btn.active { color: #f472b6; background: #311119; }
+body.dark-mode .nav-btn.active { color: var(--primary); background: var(--primary-light); }
 
 .toast-container{
     position:fixed; top: calc(76px + env(safe-area-inset-top)); right:14px; z-index:5000;
@@ -1019,7 +1067,7 @@ body.dark-mode .nav-btn.active { color: #f472b6; background: #311119; }
 
 .modal-head{ padding:18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
 .modal-title{ font-size:.9rem; font-weight:800; color:var(--primary); }
-body.dark-mode .modal-title { color: #f472b6; }
+body.dark-mode .modal-title { color: var(--primary); }
 .modal-close{ width:30px; height:30px; border:0; border-radius:9px; background:var(--surface-soft); color:var(--text); font-weight:800; }
 .modal-body{ padding:18px; max-height:75vh; overflow-y:auto; color:var(--text); }
 .modal-actions{ display:flex; gap:8px; padding:0 18px 18px; }
@@ -1080,9 +1128,8 @@ body.theme-olive::before,body.theme-olive::after{content:"";position:fixed;z-ind
 body.theme-olive::before{top:10vh;left:-16vw;background:radial-gradient(circle,rgba(194,161,83,.48),rgba(194,161,83,0) 68%)}
 body.theme-olive::after{right:-16vw;top:36vh;background:radial-gradient(circle,rgba(95,125,61,.48),rgba(95,125,61,0) 68%)}
 body.theme-olive main{position:relative;z-index:1}
-body.theme-olive.dark-mode{--primary:#9ab56a;--primary-dark:#536a34;--primary-light:rgba(106,132,66,.2);--gold:#e1bd68;--bg:#172018;--surface:rgba(37,51,39,.82);--surface-soft:rgba(47,64,49,.8);--text:#f0f2e8;--muted:#b0bba9;--border:rgba(207,220,194,.14);background:radial-gradient(ellipse at 8% 12%,rgba(191,156,79,.16),transparent 34%),radial-gradient(ellipse at 92% 28%,rgba(112,148,72,.2),transparent 36%),radial-gradient(ellipse at 55% 88%,rgba(61,95,62,.18),transparent 40%),var(--bg)}
-body.theme-olive.dark-mode::before{background:radial-gradient(circle,rgba(188,148,65,.38),rgba(188,148,65,0) 68%)}
-body.theme-olive.dark-mode::after{background:radial-gradient(circle,rgba(102,145,75,.42),rgba(102,145,75,0) 68%)}
+body.theme-olive.dark-mode{--primary:#9ab56a;--primary-dark:#536a34;--primary-light:rgba(106,132,66,.2);--gold:#e1bd68;--bg:#080a08;--surface:#141914;--surface-soft:#20271f;--text:#f0f2e8;--muted:#b0bba9;--border:#343d33;background:#080a08}
+body.theme-olive.dark-mode::before,body.theme-olive.dark-mode::after{display:none}
 body.theme-olive .topbar{background:linear-gradient(135deg,rgba(85,107,47,.92),rgba(53,69,29,.94));box-shadow:0 10px 32px rgba(53,69,29,.2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 body.theme-olive .card,body.theme-olive .menu-card,body.theme-olive .stat-card,body.theme-olive .cart-item,body.theme-olive .modal{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-md);backdrop-filter:blur(16px) saturate(135%);-webkit-backdrop-filter:blur(16px) saturate(135%)}
 body.theme-olive .menu-card:hover{border-color:rgba(85,107,47,.48)}
@@ -1104,14 +1151,134 @@ body:not(.theme-olive)::after{right:-16vw;top:36vh;background:radial-gradient(ci
 body:not(.theme-olive) main{position:relative;z-index:1}
 body:not(.theme-olive) .topbar{background:linear-gradient(135deg,rgba(92,6,28,.91),rgba(59,3,17,.94));backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 body:not(.theme-olive) .card,body:not(.theme-olive) .menu-card,body:not(.theme-olive) .stat-card,body:not(.theme-olive) .cart-item,body:not(.theme-olive) .modal{background:rgba(255,255,255,.78);border-color:rgba(92,6,28,.13);box-shadow:var(--shadow-md);backdrop-filter:blur(16px) saturate(135%);-webkit-backdrop-filter:blur(16px) saturate(135%)}
-body.dark-mode:not(.theme-olive){background:radial-gradient(ellipse at 8% 12%,rgba(214,168,79,.1),transparent 34%),radial-gradient(ellipse at 92% 28%,rgba(150,25,57,.2),transparent 36%),radial-gradient(ellipse at 55% 88%,rgba(92,6,28,.2),transparent 40%),var(--bg)}
+body.dark-mode:not(.theme-olive){background:radial-gradient(ellipse at 8% 12%,rgba(214,168,79,.12),transparent 34%),radial-gradient(ellipse at 92% 28%,rgba(125,94,42,.16),transparent 36%),radial-gradient(ellipse at 55% 88%,rgba(92,61,24,.16),transparent 40%),var(--bg)}
 body.dark-mode:not(.theme-olive)::before{background:radial-gradient(circle,rgba(214,168,79,.3),rgba(214,168,79,0) 68%)}
-body.dark-mode:not(.theme-olive)::after{background:radial-gradient(circle,rgba(173,39,73,.38),rgba(173,39,73,0) 68%)}
+body.dark-mode:not(.theme-olive)::after{background:radial-gradient(circle,rgba(193,145,54,.24),rgba(193,145,54,0) 68%)}
 body.dark-mode:not(.theme-olive) .card,body.dark-mode:not(.theme-olive) .menu-card,body.dark-mode:not(.theme-olive) .stat-card,body.dark-mode:not(.theme-olive) .cart-item,body.dark-mode:not(.theme-olive) .modal{background:rgba(30,41,59,.82);border-color:rgba(255,255,255,.1)}
 body:not(.theme-olive) .menu-card.in-cart{border-color:rgba(16,185,129,.76);box-shadow:0 0 0 2px rgba(16,185,129,.18),var(--shadow-md)}
 body:not(.theme-olive) .bottom-nav{background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
 body.dark-mode:not(.theme-olive) .bottom-nav{background:rgba(30,41,59,.78)}
 @media(prefers-reduced-transparency:reduce){body:not(.theme-olive) .card,body:not(.theme-olive) .menu-card,body:not(.theme-olive) .stat-card,body:not(.theme-olive) .cart-item,body:not(.theme-olive) .modal,body:not(.theme-olive) .bottom-nav{backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+body.dark-mode:not(.theme-olive) .bottom-nav{
+    background:rgba(30,41,59,.96);
+    border-color:#475569;
+}
+body.dark-mode:not(.theme-olive) .pay-type-btn{
+    color:#e2e8f0;
+    background:#27364b;
+    border-color:#475569;
+}
+body.dark-mode:not(.theme-olive) .pay-type-btn.active{
+    color:#ffe2a3;
+    background:rgba(140,93,22,.28);
+    border-color:var(--primary);
+    box-shadow:0 0 0 1px rgba(242,196,109,.24);
+}
+body.theme-olive.dark-mode .pay-type-btn.active{
+    color:var(--primary);
+    background:var(--primary-light);
+    border-color:var(--primary);
+}
+body.dark-mode:not(.theme-olive) .total-value,
+body.dark-mode:not(.theme-olive) .mobile-cart-dock-total{
+    color:#ffe2a3;
+}
+body.dark-mode:not(.theme-olive) .mobile-cart-dock:not([hidden]){
+    background:rgba(30,41,59,.97);
+    border-color:#475569;
+}
+body.dark-mode:not(.theme-olive) .mobile-cart-dock button{
+    background:linear-gradient(135deg,#8c5d16,#e8b84f);
+    box-shadow:0 5px 16px rgba(242,196,109,.24);
+}
+
+body.theme-olive .bottom-nav,
+body:not(.theme-olive) .bottom-nav{
+    background:
+        linear-gradient(115deg,rgba(180,173,158,.42),rgba(69,72,88,.78) 48%,rgba(124,113,105,.58)),
+        rgba(37,39,47,.68);
+    border:1px solid rgba(245,242,231,.62);
+    box-shadow:
+        0 16px 38px rgba(10,12,18,.3),
+        inset 0 1px 0 rgba(255,255,255,.42),
+        inset 0 -1px 0 rgba(255,255,255,.12);
+    backdrop-filter:blur(24px) saturate(145%);
+    -webkit-backdrop-filter:blur(24px) saturate(145%);
+}
+body.dark-mode:not(.theme-olive) .bottom-nav,
+body.theme-olive.dark-mode .bottom-nav{
+    background:
+        linear-gradient(115deg,rgba(106,105,104,.48),rgba(45,49,61,.84) 48%,rgba(82,76,76,.68)),
+        rgba(20,22,28,.76);
+    border-color:rgba(235,232,224,.58);
+}
+.bottom-nav .nav-btn{color:rgba(255,255,255,.76)}
+.bottom-nav .nav-btn.active{
+    background:rgba(255,255,255,.14);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+body.theme-olive:not(.dark-mode) .bottom-nav .nav-btn.active{color:#d8e6ae}
+body.theme-olive.dark-mode .bottom-nav .nav-btn.active{color:#c5d99b}
+body.dark-mode:not(.theme-olive) .bottom-nav .nav-btn.active{color:#ffe2a3}
+@media(prefers-reduced-transparency:reduce){
+    .bottom-nav{backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
+.bottom-nav .nav-btn.active{
+    color:#fff;
+    background:rgba(255,255,255,.14);
+    border:1.5px solid currentColor;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+body.dark-mode:not(.theme-olive) .bottom-nav .nav-btn.active{color:#ffe2a3}
+body.theme-olive:not(.dark-mode) .bottom-nav .nav-btn.active{color:#e6f4bc;background:rgba(255,255,255,.14)}
+body.theme-olive.dark-mode .bottom-nav .nav-btn.active{color:#c5d99b;background:rgba(255,255,255,.14)}
+
+.bottom-nav .nav-btn.active,
+body.dark-mode:not(.theme-olive) .bottom-nav .nav-btn.active,
+body.theme-olive:not(.dark-mode) .bottom-nav .nav-btn.active,
+body.theme-olive.dark-mode .bottom-nav .nav-btn.active{
+    color:var(--primary);
+}
+
+body:not(.dark-mode):not(.theme-olive) .bottom-nav .nav-btn.active,
+body.theme-olive:not(.dark-mode) .bottom-nav .nav-btn.active{
+    color:#fff;
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.16);
+}
+body:not(.dark-mode):not(.theme-olive) .bottom-nav .nav-btn.active{
+    background:color-mix(in srgb,#5c061c 38%,transparent);
+    border-color:#5c061c;
+    box-shadow:0 0 18px color-mix(in srgb,#5c061c 36%,transparent),inset 0 0 0 1px rgba(255,255,255,.16);
+}
+body.theme-olive:not(.dark-mode) .bottom-nav .nav-btn.active{
+    background:color-mix(in srgb,#556b2f 38%,transparent);
+    border-color:#556b2f;
+    box-shadow:0 0 18px color-mix(in srgb,#556b2f 36%,transparent),inset 0 0 0 1px rgba(255,255,255,.16);
+}
+
+.settings-close-btn{
+    flex:0 0 38px;
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:var(--surface-soft);
+    color:var(--muted);
+    font-size:1.15rem;
+    font-weight:800;
+    transition:background .2s,color .2s,border-color .2s;
+}
+.settings-close-btn:hover{
+    color:var(--primary);
+    border-color:var(--primary);
+    background:var(--primary-light);
+}
 
 /* Shared readability, hierarchy, and touch feedback improvements */
 :where(button,input,select):focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 45%,transparent);outline-offset:2px}
@@ -1137,7 +1304,7 @@ body.theme-olive .recipe-ingredient-option:has(input:checked){background:rgba(10
 button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,border-color .18s,box-shadow .18s,color .18s,transform .18s}
 @media(hover:hover){.btn:hover,.small-btn:hover,.category-btn:hover,.pay-type-btn:hover,.spicy-btn:hover{filter:brightness(1.04)}}
 @media(max-width:480px){.category-btn{padding-inline:14px}.small-btn{min-height:36px}.pay-type-btn{min-height:44px}}
-@media(max-width:767px){.qty-btn-main.quick-add-btn{width:44px;height:44px}.menu-bottom{gap:5px}.qty-control{gap:4px}}
+@media(max-width:767px){.qty-btn-main,.qty-btn-main.quick-add-btn{width:34px;height:34px;min-width:34px}.menu-bottom{gap:5px}.qty-control{gap:4px}}
 @media(max-width:380px){.qty-label{font-size:.5rem}}
 
 .mobile-cart-dock{display:none}
@@ -1199,6 +1366,8 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
 @media(max-width:480px){
     main{padding-inline:8px}
     .card-inner{padding:12px}
+    .store-settings-grid{grid-template-columns:minmax(0,1fr)}
+    .store-settings-grid .wide-field{grid-column:auto}
     .customer-grid{grid-template-columns:76px minmax(0,1fr);gap:7px}
     #pane-manage .card-inner>div[style*="grid-template-columns:1fr 1fr;"]{grid-template-columns:minmax(0,1fr)!important}
     #pane-manage .card-inner>div[style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:minmax(0,1fr)!important}
@@ -1260,23 +1429,19 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
         </div>
 
         <div class="header-controls">
-            <button class="release-notes-btn" type="button" onclick="showReleaseNotes()" title="Lihat catatan pembaruan v2.5.0">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2 14.1 4l2.8-.3 1.2 2.5 2.5 1.2-.3 2.8 1.8 2.1-1.8 2.1.3 2.8-2.5 1.2-1.2 2.5-2.8-.3-2.1 1.8-2.1-1.8-2.8.3-1.2-2.5-2.5-1.2.3-2.8L2 12.2l1.8-2.1-.3-2.8L6 6.1l1.2-2.5L10 4zM11 7v7h2V7zm0 9v2h2v-2z"/></svg>
-                Catatan Rilis
-            </button>
-            <button class="header-text-btn" onclick="toggleOliveTheme()" id="styleThemeBtn" title="Ganti tema ke Olive Glass"><span aria-hidden="true">🌺</span><span id="styleThemeLabel">Tema Marun</span></button>
-            <button class="header-text-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Aktifkan mode gelap"><span id="themeModeIcon" aria-hidden="true">🌙</span><span id="themeModeLabel">Mode Terang</span></button>
-
-            <button class="theme-toggle-btn" onclick="toggleOrderNotifications()" id="orderNotificationBtn" title="Aktifkan notifikasi pesanan" aria-label="Aktifkan notifikasi pesanan" aria-pressed="false">🔔</button>
-            <button class="crowd-mode-btn" id="crowdModeBtn" type="button" onclick="toggleCrowdMode()" aria-pressed="false">🚨 Ramai</button>
-            <label class="notification-volume-control" title="Atur volume notifikasi">
-                <span aria-hidden="true">🔊</span>
-                <input id="notificationVolume" type="range" min="0" max="100" step="5" value="80" aria-label="Volume notifikasi" oninput="updateNotificationVolume(this.value)">
-                <output id="notificationVolumeValue" for="notificationVolume">80%</output>
-            </label>
             <div class="clock">
                 <span class="clock-dot"></span>
                 <span id="liveClock">Memuat...</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle-btn" onclick="toggleOrderNotifications()" id="orderNotificationBtn" title="Aktifkan notifikasi pesanan" aria-label="Aktifkan notifikasi pesanan" aria-pressed="false">🔔</button>
+                <button class="crowd-mode-btn" id="crowdModeBtn" type="button" onclick="toggleCrowdMode()" aria-pressed="false">🚨 Ramai</button>
+                <label class="notification-volume-control" title="Atur volume notifikasi">
+                    <span aria-hidden="true">🔊</span>
+                    <input id="notificationVolume" type="range" min="0" max="100" step="5" value="80" aria-label="Volume notifikasi" oninput="updateNotificationVolume(this.value)">
+                    <output id="notificationVolumeValue" for="notificationVolume">80%</output>
+                </label>
+                <button id="headerSettingsToggle" class="header-settings-trigger" type="button" onclick="switchTab('settings')" aria-label="Buka pengaturan" title="Pengaturan"><span aria-hidden="true">⚙️</span></button>
             </div>
         </div>
     </div>
@@ -1348,7 +1513,8 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
                         <label class="form-label">Metode Pembayaran</label>
                         <div class="pay-type-selector">
                             <button id="payTypeCash" class="pay-type-btn active" onclick="setPaymentType('Cash')">💵 Tunai (Cash)</button>
-                            <button id="payTypeBrimo" class="pay-type-btn" onclick="setPaymentType('BRImo Transfer'); showBrimoModal();">🏦 Transfer BRImo</button>
+                            <button id="payTypeQris" class="pay-type-btn" onclick="selectQrisPayment()">📱 QRIS</button>
+                            <button id="payTypeBrimo" class="pay-type-btn" onclick="setPaymentType('BRImo Transfer'); showBrimoModal();">🏦 BRImo</button>
                         </div>
                     </div>
 
@@ -1487,18 +1653,31 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
 
 
 
-<!-- =======================================================
-     TAB MANAGEMENT (KELOLA MENU, STOK & USAHA)
-======================================================= -->
+<section id="pane-settings" class="tab-pane">
+    <div class="card" style="margin-bottom:18px;">
+        <div class="card-inner">
+            <div class="card-title-row">
+                <div class="card-title"><span class="card-title-icon">⚙️</span> PENGATURAN APLIKASI</div>
+                <button class="settings-close-btn" type="button" onclick="closeSettings()" aria-label="Tutup pengaturan" title="Tutup pengaturan">×</button>
+            </div>
+            <div class="settings-options-grid">
+                <button class="release-notes-btn" type="button" onclick="showReleaseNotes()" title="Lihat catatan pembaruan v2.5.0">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2 14.1 4l2.8-.3 1.2 2.5 2.5 1.2-.3 2.8 1.8 2.1-1.8 2.1.3 2.8-2.5 1.2-1.2 2.5-2.8-.3-2.1 1.8-2.1-1.8-2.8.3-1.2-2.5-2.5-1.2.3-2.8L2 12.2l1.8-2.1-.3-2.8L6 6.1l1.2-2.5L10 4zM11 7v7h2V7zm0 9v2h2v-2z"/></svg>
+                    Catatan Rilis
+                </button>
+                <button class="header-text-btn" onclick="toggleOliveTheme()" id="styleThemeBtn" title="Ganti tema ke Olive Glass"><span aria-hidden="true">🌺</span><span id="styleThemeLabel">Tema Marun</span></button>
+                <button class="header-text-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Aktifkan mode gelap"><span id="themeModeIcon" aria-hidden="true">🌙</span><span id="themeModeLabel">Mode Terang</span></button>
+            </div>
+        </div>
+    </div>
 
-<section id="pane-manage" class="tab-pane">
-    <!-- PENGATURAN USAHA -->
+        <!-- PENGATURAN USAHA -->
     <div class="card" style="margin-bottom:18px;">
         <div class="card-inner">
             <div class="card-title-row">
                 <div class="card-title"><span class="card-title-icon">⚙️</span> PENGATURAN USAHA</div>
             </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div class="store-settings-grid">
                 <div>
                     <label class="form-label">Nama Usaha</label>
                     <input id="cfgStoreName" class="form-control" placeholder="Nama Toko / Kedai">
@@ -1507,36 +1686,43 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
                     <label class="form-label">Nomor Telepon</label>
                     <input id="cfgStorePhone" class="form-control" placeholder="08xxxxxxxxxx">
                 </div>
-                <div style="grid-column:1/-1;">
+                <div class="wide-field">
                     <label class="form-label">Alamat Usaha</label>
                     <input id="cfgStoreAddress" class="form-control" placeholder="Alamat Lengkap">
                 </div>
-                <div style="grid-column:1/-1;">
-                    <label class="form-label">URL Logo Toko (opsional)</label>
-                    <input id="cfgStoreLogo" class="form-control" placeholder="logo2.svg atau URL Gambar">
-                </div>
-                <div>
-                    <label class="form-label" for="cfgPaymentQrUrl">URL Gambar QRIS (opsional)</label>
-                    <input id="cfgPaymentQrUrl" class="form-control" type="url" placeholder="https://.../qris.png">
-                </div>
-                <div>
+                <div class="wide-field">
                     <label class="form-label" for="cfgPaymentQrLabel">Label QR Pembayaran</label>
                     <input id="cfgPaymentQrLabel" class="form-control" placeholder="QRIS Kedai Arsyla">
                 </div>
             </div>
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:12px 0;">
+            <input id="cfgPaymentQrUrl" type="hidden">
+            <div class="store-logo-picker">
                 <img id="storeLogoPreview" src="logo2.svg" alt="Pratinjau logo toko" style="width:64px;height:64px;object-fit:cover;border-radius:14px;border:1px solid var(--border);background:#fff;padding:4px;">
-                <div style="flex:1;min-width:190px;">
+                <div class="store-logo-picker-copy">
                     <label class="form-label" for="storeLogoFile">Pilih logo dari galeri / penyimpanan</label>
                     <input id="storeLogoFile" type="file" class="form-control" accept="image/*" onchange="saveLocalStoreLogo(event)">
-                    <small style="display:block;color:var(--muted);font-size:.65rem;margin-top:5px;">Logo disimpan di perangkat/browser ini dan otomatis dikecilkan agar ringan.</small>
+                    <small class="store-logo-picker-hint">Pilih gambar dari perangkat, lalu simpan pengaturan agar tampil di layar pelanggan.</small>
                 </div>
-                <button class="btn btn-soft" type="button" onclick="removeLocalStoreLogo()">Gunakan logo URL</button>
+                <button class="btn btn-soft" type="button" onclick="removeLocalStoreLogo()">Gunakan logo bawaan</button>
+            </div>
+            <div class="store-logo-picker">
+                <img id="paymentQrPreview" src="" alt="Pratinjau QRIS" hidden style="width:96px;height:96px;object-fit:contain;border-radius:14px;border:1px solid var(--border);background:#fff;padding:6px;">
+                <div class="store-logo-picker-copy">
+                    <label class="form-label" for="paymentQrFile">Pilih gambar QRIS dari galeri / penyimpanan</label>
+                    <input id="paymentQrFile" type="file" class="form-control" accept="image/*" onchange="selectPaymentQrImage(event)">
+                    <small class="store-logo-picker-hint">Gambar akan disimpan bersama pengaturan dan ditampilkan di layar pelanggan.</small>
+                </div>
+                <button class="btn btn-soft" type="button" onclick="removePaymentQrImage()">Hapus gambar QRIS</button>
             </div>
             <button class="btn btn-primary" onclick="saveStoreSettings()">💾 Simpan Pengaturan Usaha</button>
         </div>
     </div>
+</section>
+<!-- =======================================================
+     TAB MANAGEMENT (KELOLA MENU & STOK)
+======================================================= -->
 
+<section id="pane-manage" class="tab-pane">
     <!-- KELOLA STOK BAHAN -->
     <div class="card" style="margin-bottom:18px;">
         <div class="card-inner">
@@ -1671,7 +1857,7 @@ button,.category-btn,.pay-type-btn,.spicy-btn{transition:background-color .18s,b
                 <div class="stat-label">Metode Pembayaran</div>
                 <div class="stat-value" style="font-size:.75rem; font-weight:700; margin-top:5px;">
                     💵 Cash: Rp <span id="statCash">0</span><br>
-                    🏦 BRImo: Rp <span id="statBrimo">0</span>
+                    📱 QRIS + BRImo: Rp <span id="statQrisBrimo">0</span>
                 </div>
             </div>
 
@@ -1912,6 +2098,7 @@ let menuSpicyState = {};
 let editingOrderKey = null;
 let editingMenuKey = null;
 let selectedPaymentType = "Cash";
+let lastNonSettingsTab = "pos";
 let orderListenerReady = false;
 let orderNotificationsEnabled = localStorage.getItem("orderNotificationsEnabled") === "true";
 let orderAudioContext = null;
@@ -2299,7 +2486,20 @@ function getMonthYearKey(){
 function rupiah(value){ return Number(value || 0).toLocaleString("id-ID"); }
 
 function escapeHtml(text){
-    return String(text || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&#039;");
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/\"/g,"&quot;")
+        .replace(/'/g,"&#39;");
+}
+
+function toJsString(value){
+    return `'${String(value ?? "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/\r/g, "\\r")
+        .replace(/\n/g, "\\n")}'`;
 }
 
 function updateClock(){
@@ -2387,23 +2587,76 @@ window.showBrimoModal=function(){
     openModal("Transfer BRImo", bodyHtml, null);
 };
 
+function getConfiguredPaymentQr(){
+    const value = document.getElementById("cfgPaymentQrUrl").value.trim() || dbSettings.paymentQrUrl || "";
+    if(/^data:image\/(?:png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/i.test(value)) return value;
+    try {
+        const url = new URL(value, location.href);
+        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+    } catch {
+        return "";
+    }
+}
+
+window.selectQrisPayment=function(){
+    const qrImage = getConfiguredPaymentQr();
+    if(!qrImage){
+        showToast("Pilih dan simpan gambar QRIS terlebih dahulu di Pengaturan Usaha.", "warning");
+        return;
+    }
+    setPaymentType("QRIS");
+    const label = document.getElementById("cfgPaymentQrLabel").value.trim() || "QRIS Kedai Arsyla";
+    const bodyHtml = `
+        <div style="text-align:center;">
+            <div style="font-size:.82rem;font-weight:800;color:var(--primary);margin-bottom:10px;">${escapeHtml(label)}</div>
+            <img src="${escapeHtml(qrImage)}" alt="Kode pembayaran QRIS" style="display:block;width:min(240px,100%);height:auto;max-height:300px;object-fit:contain;margin:0 auto;border:1px solid var(--border);border-radius:14px;background:#fff;padding:8px;">
+            <div style="margin-top:10px;font-size:.68rem;color:var(--muted);">Minta pelanggan memindai kode QRIS ini untuk membayar.</div>
+        </div>`;
+    openModal("Pembayaran QRIS", bodyHtml, null);
+    document.getElementById("modalConfirm").style.display = "none";
+    document.querySelector("#modalOverlay .modal-actions .btn-soft").textContent = "Tutup";
+};
+
 window.copyNoRek=function(){
     navigator.clipboard.writeText(BANK_INFO.noRek).then(()=>{ showToast("Nomor Rekening berhasil disalin!"); });
 };
 
 window.setPaymentType=function(type){
     selectedPaymentType = type;
-    const btnCash = document.getElementById("payTypeCash");
-    const btnBrimo = document.getElementById("payTypeBrimo");
-    if(type === "Cash"){ btnCash.classList.add("active"); btnBrimo.classList.remove("active"); }
-    else { btnBrimo.classList.add("active"); btnCash.classList.remove("active"); }
+    const paymentButtons = {
+        "Cash": "payTypeCash",
+        "QRIS": "payTypeQris",
+        "BRImo Transfer": "payTypeBrimo"
+    };
+    Object.entries(paymentButtons).forEach(([paymentType, buttonId])=>{
+        document.getElementById(buttonId).classList.toggle("active", type === paymentType);
+    });
 };
 
 window.switchTab=function(tab){
+    const nextPane = document.getElementById(`pane-${tab}`);
+    if(!nextPane) return;
+    const currentPane = document.querySelector(".tab-pane.active");
+    if(tab === "settings" && currentPane && currentPane.id !== "pane-settings"){
+        lastNonSettingsTab = currentPane.id.replace("pane-","");
+    } else if(tab !== "settings"){
+        lastNonSettingsTab = tab;
+    }
     document.querySelectorAll(".tab-pane").forEach(el=>el.classList.remove("active"));
     document.querySelectorAll(".nav-btn").forEach(el=>el.classList.remove("active"));
-    document.getElementById(`pane-${tab}`).classList.add("active");
-    document.getElementById(`btn-tab-${tab}`).classList.add("active");
+    nextPane.classList.add("active");
+    const navButton = document.getElementById(`btn-tab-${tab}`);
+    if(navButton) navButton.classList.add("active");
+    const settingsButton = document.getElementById("headerSettingsToggle");
+    if(settingsButton){
+        if(tab === "settings") settingsButton.setAttribute("aria-current", "page");
+        else settingsButton.removeAttribute("aria-current");
+    }
+};
+
+window.closeSettings=function(){
+    const returnTab = document.getElementById(`pane-${lastNonSettingsTab}`) ? lastNonSettingsTab : "pos";
+    switchTab(returnTab);
 };
 
 window.toggleKitchenView=function(){
@@ -2445,7 +2698,8 @@ window.saveStoreSettings = function(){
     const name = document.getElementById("cfgStoreName").value.trim();
     const phone = document.getElementById("cfgStorePhone").value.trim();
     const address = document.getElementById("cfgStoreAddress").value.trim();
-    const logo = document.getElementById("cfgStoreLogo").value.trim();
+    const savedImageLogo = typeof dbSettings.logo === "string" && dbSettings.logo.startsWith("data:image/") ? dbSettings.logo : "logo2.svg";
+    const logo = localStorage.getItem("storeLogoLocal") || savedImageLogo;
     const paymentQrUrl = document.getElementById("cfgPaymentQrUrl").value.trim();
     const paymentQrLabel = document.getElementById("cfgPaymentQrLabel").value.trim();
 
@@ -2473,9 +2727,9 @@ function applySettings(data){
     document.getElementById("cfgStoreName").value = data.name || "";
     document.getElementById("cfgStorePhone").value = data.phone || "";
     document.getElementById("cfgStoreAddress").value = data.address || "";
-    document.getElementById("cfgStoreLogo").value = data.logo || "logo2.svg";
     document.getElementById("cfgPaymentQrUrl").value = data.paymentQrUrl || "";
     document.getElementById("cfgPaymentQrLabel").value = data.paymentQrLabel || "";
+    updatePaymentQrPreview(data.paymentQrUrl || "");
 }
 
 window.saveLocalStoreLogo = async function(event){
@@ -2511,7 +2765,7 @@ window.saveLocalStoreLogo = async function(event){
         localStorage.setItem("storeLogoLocal", compressedLogo);
         document.getElementById("headerLogoImg").src = compressedLogo;
         document.getElementById("storeLogoPreview").src = compressedLogo;
-        showToast("Logo berhasil disimpan di perangkat ini.");
+        showToast("Logo dipilih. Tekan Simpan Pengaturan Usaha agar tampil di layar pelanggan.");
     } catch(error) {
         console.error("Gagal menyimpan logo lokal:", error);
         showToast("Logo gagal disimpan. Coba gambar yang ukurannya lebih kecil.", "error");
@@ -2519,12 +2773,94 @@ window.saveLocalStoreLogo = async function(event){
     event.target.value = "";
 };
 
-window.removeLocalStoreLogo = function(){
-    localStorage.removeItem("storeLogoLocal");
-    const logo = document.getElementById("cfgStoreLogo").value.trim() || dbSettings.logo || "logo2.svg";
-    document.getElementById("headerLogoImg").src = logo;
-    document.getElementById("storeLogoPreview").src = logo;
-    showToast("Logo lokal dihapus. Logo URL digunakan kembali.");
+window.removeLocalStoreLogo = async function(){
+    try {
+        await update(settingsRef, { logo: "logo2.svg" });
+        localStorage.removeItem("storeLogoLocal");
+        dbSettings = { ...dbSettings, logo: "logo2.svg" };
+        document.getElementById("headerLogoImg").src = "logo2.svg";
+        document.getElementById("storeLogoPreview").src = "logo2.svg";
+        showToast("Logo bawaan berhasil digunakan.");
+    } catch(error) {
+        console.error("Gagal menggunakan logo bawaan:", error);
+        showToast("Logo bawaan gagal disimpan. Periksa koneksi lalu coba lagi.", "error");
+    }
+};
+
+function updatePaymentQrPreview(imageUrl){
+    const preview = document.getElementById("paymentQrPreview");
+    if(!preview) return;
+    preview.src = imageUrl || "";
+    preview.hidden = !imageUrl;
+}
+
+window.selectPaymentQrImage = async function(event){
+    const input = event.target;
+    const file = input.files && input.files[0];
+    if(!file) return;
+    if(!file.type.startsWith("image/")){
+        showToast("Pilih file gambar untuk QRIS.", "warning");
+        input.value = "";
+        return;
+    }
+
+    try {
+        const imageUrl = await new Promise((resolve, reject)=>{
+            const reader = new FileReader();
+            reader.onload = ()=>resolve(reader.result);
+            reader.onerror = ()=>reject(new Error("File gambar tidak dapat dibaca."));
+            reader.readAsDataURL(file);
+        });
+        const image = await new Promise((resolve, reject)=>{
+            const img = new Image();
+            img.onload = ()=>resolve(img);
+            img.onerror = ()=>reject(new Error("Format gambar tidak didukung."));
+            img.src = imageUrl;
+        });
+
+        const scale = Math.min(1, 1024 / Math.max(image.width, image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        const context = canvas.getContext("2d");
+        if(!context) throw new Error("Pemrosesan gambar tidak tersedia di browser ini.");
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const qrImage = canvas.toDataURL("image/png");
+        const urlField = document.getElementById("cfgPaymentQrUrl");
+        urlField.value = qrImage;
+        updatePaymentQrPreview(qrImage);
+
+        try {
+            await update(settingsRef, { paymentQrUrl: qrImage });
+            dbSettings = { ...dbSettings, paymentQrUrl: qrImage };
+            showToast("QRIS tersimpan dan layar pelanggan diperbarui otomatis.");
+        } catch(error) {
+            console.error("Gagal menyimpan gambar QRIS:", error);
+            showToast("QRIS dipilih, tetapi gagal disimpan. Periksa koneksi lalu tekan Simpan Pengaturan Usaha.", "error");
+        }
+    } catch(error) {
+        console.error("Gagal memproses gambar QRIS:", error);
+        showToast("Gambar QRIS gagal diproses. Coba pilih gambar yang lebih kecil.", "error");
+    }
+    input.value = "";
+};
+
+window.removePaymentQrImage = async function(){
+    const urlField = document.getElementById("cfgPaymentQrUrl");
+    const previousQr = dbSettings.paymentQrUrl || "";
+    urlField.value = "";
+    document.getElementById("paymentQrFile").value = "";
+    updatePaymentQrPreview("");
+    try {
+        await update(settingsRef, { paymentQrUrl: "" });
+        dbSettings = { ...dbSettings, paymentQrUrl: "" };
+        showToast("QRIS dihapus dan layar pelanggan diperbarui.");
+    } catch(error) {
+        console.error("Gagal menghapus gambar QRIS:", error);
+        urlField.value = previousQr;
+        updatePaymentQrPreview(previousQr);
+        showToast("QRIS gagal dihapus. Periksa koneksi lalu coba lagi.", "error");
+    }
 };
 
 
@@ -2889,7 +3225,7 @@ function renderCategoryTabs(){
         const catId = String(cat || "").trim().replace(/\s+/g, '_');
         const icon = getCategoryIcon(cat);
         return `
-            <button class="category-btn ${activeFilter === cat ? 'active' : ''}" id="cat-${catId}" onclick="filterMenu('${escapeHtml(cat)}')">
+            <button class="category-btn ${activeFilter === cat ? 'active' : ''}" id="cat-${catId}" onclick="filterMenu(${toJsString(cat)})">
                 ${icon} ${escapeHtml(cat)}
             </button>
         `;
@@ -2967,9 +3303,9 @@ function renderMenuGrid(){
             <div class="menu-bottom">
                 <span class="qty-label">JUMLAH</span>
                 <div class="qty-control">
-                    <button class="qty-btn-main" onclick="addMenuToCart('${escapeHtml(menu.name)}', ${menu.price}, -1)">−</button>
+                <button class="qty-btn-main" onclick="addMenuToCart(${toJsString(menu.name)}, ${menu.price}, -1)">−</button>
                     <span class="qty-number">${qty}</span>
-                    <button class="qty-btn-main quick-add-btn" aria-label="Tambah ${escapeHtml(menu.name)}" ${isOutOfStock && qty >= stockAvailable ? 'disabled' : ''} onclick="addMenuToCart('${escapeHtml(menu.name)}', ${menu.price}, 1)">+</button>
+                <button class="qty-btn-main quick-add-btn" aria-label="Tambah ${escapeHtml(menu.name)}" ${isOutOfStock && qty >= stockAvailable ? 'disabled' : ''} onclick="addMenuToCart(${toJsString(menu.name)}, ${menu.price}, 1)">+</button>
                 </div>
             </div>
         `;
@@ -2980,7 +3316,7 @@ function renderMenuGrid(){
 function spicyButton(menuName, level, selected){
     const levelClass = level === "Tidak Pedas" ? "level-mild" : level === "Sedang" ? "level-medium" : "level-hot";
     return `
-        <button class="spicy-btn ${levelClass} ${selected===level ? "active" : ""}" onclick="setMenuSpicy('${escapeHtml(menuName)}', '${level}')">
+        <button class="spicy-btn ${levelClass} ${selected===level ? "active" : ""}" onclick="setMenuSpicy(${toJsString(menuName)}, ${toJsString(level)})">
             ${level}
         </button>
     `;
@@ -3427,12 +3763,20 @@ window.confirmResetHariIni = function(){
 };
 
 window.confirmResetBulanan = function(){
-    openModal("Reset Bulan Ini?", "<p style='font-size:.72rem; color:var(--red)'>Semua transaksi bulan ini akan dihapus!</p>", ()=>{
+    openModal("Reset Bulan Ini?", "<p style='font-size:.72rem; color:var(--red)'>Semua pesanan dan pengeluaran pada bulan ini, termasuk hari ini, akan dihapus. Data bulan lain tidak akan berubah.</p>", ()=>{
         const month = getMonthYearKey();
-        Object.keys(dbOrders).forEach(key=>{
-            if(dbOrders[key].monthYearKey === month){ remove(ref(db, `orders/${key}`)); }
-        });
-        showToast("Data bulan ini dihapus.");
+        const monthlyOrderRemovals = Object.keys(dbOrders)
+            .filter(key=>dbOrders[key].monthYearKey === month)
+            .map(key=>remove(ref(db, `orders/${key}`)));
+        const monthlyExpenseRemovals = Object.keys(dbExpenses)
+            .filter(key=>dbExpenses[key].monthYearKey === month)
+            .map(key=>remove(ref(db, `expenses/${key}`)));
+        Promise.all([...monthlyOrderRemovals, ...monthlyExpenseRemovals])
+            .then(()=>showToast("Pesanan dan pengeluaran bulan ini berhasil direset."))
+            .catch(error=>{
+                console.error("Gagal mereset data bulanan:", error);
+                showToast("Sebagian data bulan ini gagal dihapus. Periksa koneksi lalu coba lagi.", "error");
+            });
     });
 };
 
@@ -3600,7 +3944,7 @@ function renderRealtimeData(){
     ordersTable.innerHTML=""; mobileOrders.innerHTML=""; historyTable.innerHTML="";
 
     let dailyRevenue=0, monthlyRevenue=0, completedCount=0, activeOrders=0;
-    let dailyCash = 0, dailyBrimo = 0, monthlyExpenseTotal = 0;
+    let dailyCash = 0, dailyQrisBrimo = 0, monthlyExpenseTotal = 0;
     
     const categoryPortions = {};
 
@@ -3610,6 +3954,7 @@ function renderRealtimeData(){
 
     Object.keys(dbOrders).forEach(key=>{
         const order = dbOrders[key];
+        if(order.isExcludedFromRevenue) return;
 
         if(order.status==="Selesai" && order.monthYearKey===month){
             monthlyRevenue += Number(order.total || 0);
@@ -3697,7 +4042,8 @@ function renderRealtimeData(){
             } else {
                 const tot = Number(order.total || 0);
                 dailyRevenue += tot; completedCount++;
-                if(order.paymentType === "BRImo Transfer"){ dailyBrimo += tot; } else { dailyCash += tot; }
+                if(order.paymentType === "BRImo Transfer" || order.paymentType === "QRIS"){ dailyQrisBrimo += tot; }
+                else { dailyCash += tot; }
 
                 (order.items || []).forEach(item=>{
                     const qty = Number(item.qty || 0);
@@ -3732,7 +4078,7 @@ function renderRealtimeData(){
 
     document.getElementById("statRevenue").innerText = rupiah(dailyRevenue);
     document.getElementById("statCash").innerText = rupiah(dailyCash);
-    document.getElementById("statBrimo").innerText = rupiah(dailyBrimo);
+    document.getElementById("statQrisBrimo").innerText = rupiah(dailyQrisBrimo);
     
     let portionsHTML = "";
     if(Object.keys(categoryPortions).length === 0){
@@ -3765,6 +4111,7 @@ window.exportFinancialReport = function(period){
     const monthly = period === "monthly";
     const periodKey = monthly ? getMonthYearKey() : getTodayKey();
     const reportOrders = Object.values(dbOrders).filter(order=>
+        !order.isExcludedFromRevenue &&
         order.status === "Selesai" &&
         (monthly ? order.monthYearKey === periodKey : order.orderDateKey === periodKey && !order.isArchived)
     );

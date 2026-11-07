@@ -178,7 +178,7 @@ function renderDetails(order){return (order.items || []).map(item=>{
 }).join(" · ");}
 function renderOrders(orders){
     const today=getTodayKey();
-    const todayOrders=Object.values(orders || {}).filter(order=>order.orderDateKey===today && !order.isArchived);
+    const todayOrders=Object.values(orders || {}).filter(order=>order.orderDateKey===today && !order.isArchived && !order.isExcludedFromRevenue);
     const processing=todayOrders.filter(order=>order.status==="Diproses").sort((a,b)=>queueNumber(a)-queueNumber(b));
     const waiting=todayOrders.filter(order=>order.status==="Menunggu").sort((a,b)=>queueNumber(a)-queueNumber(b));
     const ready=todayOrders.filter(order=>order.status==="Selesai").map(order=>{
@@ -207,6 +207,7 @@ function renderOrders(orders){
 }
 function safeImageUrl(value){
     if(!value) return "";
+    if(/^data:image\/(?:png|jpeg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/i.test(value)) return value;
     try{const url=new URL(value,location.href);return ["https:","http:"].includes(url.protocol)?url.href:"";}catch{return "";}
 }
 function applySettings(settings){
@@ -216,11 +217,12 @@ function applySettings(settings){
     document.getElementById("storeAddress").textContent=[data.address,data.phone ? `Telp: ${data.phone}` : ""].filter(Boolean).join(" · ") || "Informasi pesanan pelanggan";
     document.getElementById("storeLogo").src=safeImageUrl(data.logo) || "logo2.svg";
     const customQr=safeImageUrl(data.paymentQrUrl);
+    const paymentQrLabel=(data.paymentQrLabel || "").trim() || "QRIS";
     const qr=document.getElementById("paymentQr");
     const fallback=document.getElementById("qrFallback");
-    document.getElementById("paymentQrLabel").textContent=customQr ? (data.paymentQrLabel || "QRIS") : "TRANSFER BRImo";
+    document.getElementById("paymentQrLabel").textContent=paymentQrLabel;
     document.getElementById("paymentDescription").textContent=customQr ? "Scan QR pembayaran kedai" : "Scan QR nomor rekening atau transfer manual";
-    document.getElementById("paymentName").textContent=customQr ? (data.paymentQrLabel || "QRIS Kedai Arsyla") : bankInfo.name;
+    document.getElementById("paymentName").textContent=customQr ? paymentQrLabel : bankInfo.name;
     document.getElementById("paymentAccount").textContent=customQr ? "" : bankInfo.account;
     document.getElementById("paymentOwner").textContent=customQr ? "" : `a.n. ${bankInfo.owner}`;
     if(customQr){
@@ -232,7 +234,7 @@ function applySettings(settings){
     qr.onerror=()=>{
         qr.hidden=true;fallback.hidden=false;fallback.textContent="QR tidak dapat dimuat. Gunakan nomor rekening di bawah.";
         if(customQr){
-            document.getElementById("paymentQrLabel").textContent="TRANSFER BRImo";
+            document.getElementById("paymentQrLabel").textContent=paymentQrLabel;
             document.getElementById("paymentDescription").textContent="Scan QR nomor rekening atau transfer manual";
             document.getElementById("paymentName").textContent=bankInfo.name;
             document.getElementById("paymentAccount").textContent=bankInfo.account;
